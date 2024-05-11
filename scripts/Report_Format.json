@@ -1,0 +1,36 @@
+{
+    "Date": "J3",
+    "Matrix": {
+        "Columns": {
+            "Food": "B",
+            "Alcohol": "C",
+            "Non-Alcohol": "D",
+            "Water": "F",
+            "Wine": "G",
+            "Tobacco": "H",
+            "Misc": "I",
+            "Other": "K"
+        },
+        "Rows": {
+            "Breakfast": "10",
+            "Lunch": "11",
+            "Dinner": "12"
+        }
+    },
+    "Cards": {
+        "Visa": "K21",
+        "MasterCard": "K22",
+        "Amex": "K24",
+        "Cash Tips": "K27",
+        "Card Tips": "K28",
+        "Total Service": "K29"
+    },
+    "Others": {
+        "Level": "K39"
+    },
+    "Foreign_Currency": {
+        "USD": "B33",
+        "GBP": "B34",
+        "CAD": "B35"
+    }
+}
