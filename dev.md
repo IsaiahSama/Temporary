@@ -4,7 +4,7 @@ This document serves as my core area for notes, and information relating to the 
 
 # ToDo
 1. Setup Folder Structure (Completed)
-2. Setup Email File Extraction
+2. Setup Email File Extraction (On Pause)
 3. Develop scripts to generate Reports
 4. Create web interface for uploading and downloading reports.
 5. Test and Verify Generated Reporting Data
