@@ -6,17 +6,30 @@ from datetime import datetime
 from utils import *
 
 class ReportGenerator:
-    def __init__(self, restaurant_name: RestaurantNames ):
-        self.restaurant_name = restaurant_name
-        self.helper = ReportGeneratorHelper
+    def __init__(self, restaurant_name: RestaurantNames, date: datetime=None):
+        """
+        Initializes a new instance of the ReportGenerator class.
 
-    def generate_daily_report(self, date: datetime=None) -> None:
+        Parameters:
+            restaurant_name (RestaurantNames): The name of the restaurant for which the reports are generated.
+            date (datetime, optional): The date for which the reports are generated. Defaults to the current date.
+
+        Returns:
+            None
+        """
+
+        self.restaurant_name: RestaurantNames       = restaurant_name
+        self.date:            datetime              = date or datetime.now()
+        self.helper:          ReportGeneratorHelper = ReportGeneratorHelper
+
+    def generate_daily_report(self) -> None:
 
         final_results = {}
 
         # Step 0: Prepare the date, and load in the correct formats.
-        target_date = date or datetime.now()
-        
+
+        target_date_string = self.date.strftime("%Y%m%d")
+
         # Step 1: Load the csv with either the provided date, or the current one into dataframes.
 
         # Step 2: Run calculations on the dataframes
@@ -46,3 +59,8 @@ class ReportGenerator:
 
     def export_to_quickbooks(self, data: dict) -> None:
         pass
+
+if __name__ == "__main__":
+    target_date = datetime(2024, 5, 9)
+    rg = ReportGenerator(RestaurantNames.BISTRO, target_date)
+    rg.generate_daily_report()
