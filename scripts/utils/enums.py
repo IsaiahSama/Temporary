@@ -3,7 +3,21 @@ from enum import Enum
 
 
 class RestaurantNames(Enum):
-    TIDES = "Tides"
-    QP_BISTRO = "QP Bistro"
-    THE_CLIFF = "The Cliff"
-    CAFE_DE_PARIS = "Cafe de Paris"
+    """Enum mapping restaurant keys, to their names and abbreviations.
+    
+    Example: TIDES = ('Tides', 'TPS')
+    
+    Attributes:
+        TIDES
+
+        BISTRO
+
+        CLIFF
+        
+        CAFE
+    """
+
+    TIDES = ("Tides", "TPS")
+    BISTRO = ("QP Bistro", "QPB")
+    CLIFF = ("The Cliff", "QPC")
+    CAFE = ("Cafe de Paris", "CDP")
