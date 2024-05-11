@@ -3,7 +3,7 @@
 This document serves as my core area for notes, and information relating to the structure and functionality of the application.
 
 # ToDo
-1. Setup Folder Structure (In Progress)
+1. Setup Folder Structure (Completed)
 2. Setup Email File Extraction
 3. Develop scripts to generate Reports
 4. Create web interface for uploading and downloading reports.
