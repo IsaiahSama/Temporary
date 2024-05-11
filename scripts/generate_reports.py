@@ -64,6 +64,7 @@ class ReportGenerator:
         spent_by_payment_type = self.helper.calculate_total_by_payment_type(payments_df)
         
         # Calculate total USD and BBD spent by Meal Type
+        spent_by_session_type = self.helper.calculate_total_by_meal_and_payment_type(payments_df)
         
         # Calculate total BBD spent by Meal Type sub-categories
 

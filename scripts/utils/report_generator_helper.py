@@ -124,8 +124,23 @@ class ReportGeneratorHelper:
         return payment_totals
     
     @staticmethod
-    def calculate_total_by_meal_type(sales_df: DataFrame) -> dict:
-        payment_totals = {}
+    def calculate_total_by_meal_and_payment_type(payments_df: DataFrame) -> dict:
+        session_totals = {}
 
-        for _, row in sales_df.iterrows():
-            pass
+        for _, row in payments_df.iterrows():
+            payment_type = row[PaymentColumnNames.PAYMENT_TYPE.value]
+            session = row[PaymentColumnNames.SESSION.value]
+            currency = row[PaymentColumnNames.CURRENCY.value]
+            amount = row[PaymentColumnNames.AMOUNT.value]
+
+            if session in session_totals:
+                if payment_type in session_totals[session]:
+                    if currency not in session_totals[session][payment_type]:
+                        session_totals[session][payment_type][currency] = amount
+                    else:
+                        session_totals[session][payment_type][currency] += amount
+                else:
+                    session_totals[session].update({payment_type: {currency: amount}})
+            else:
+                session_totals.update({session: {payment_type: {currency: amount}}})
+        return session_totals
