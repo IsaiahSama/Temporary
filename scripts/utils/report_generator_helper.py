@@ -53,7 +53,7 @@ class ReportGeneratorHelper:
             """
             split_category = category.split('/')
             if len(split_category) > 2: return split_category[2]
-            else: return None
+            else: return "Other"
 
         category_key = SalesColumnNames.CATEGORY.value
         sales_df[category_key] = sales_df[category_key].apply(clean_category)
@@ -144,3 +144,22 @@ class ReportGeneratorHelper:
             else:
                 session_totals.update({session: {payment_type: {currency: amount}}})
         return session_totals
+
+    @staticmethod
+    def calculate_total_by_subcategory(sales_df: DataFrame) -> dict:
+        payment_categories = {}
+
+        for _, row in sales_df.iterrows():
+            category = row[SalesColumnNames.CATEGORY.value]
+            session = row[SalesColumnNames.SESSION.value]
+            amount = row[SalesColumnNames.AMOUNT.value]
+
+            if session in payment_categories:
+                if category in payment_categories[session]:
+                    payment_categories[session][category] += amount
+                else:
+                    payment_categories[session].update({category: amount})
+            else:
+                payment_categories.update({session: {category: amount}})
+
+        return payment_categories
