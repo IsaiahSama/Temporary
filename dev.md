@@ -42,9 +42,9 @@ Root
 │       └── The Cliff    
 └── scripts
     └── Report Templates
-        ├── CafeDeParis_Sales_Report_Template.xlsx
+        ├── Cafe_De_Paris_Sales_Report_Template.xlsx
         ├── Cliff_Sales_Report_Template.xlsx
-        ├── QPBistro_Sales_Report_Template.xlsx
+        ├── QP_Bistro_Sales_Report_Template.xlsx
         └── Tides_Sales_Report_Template.xlsx
 
 
@@ -140,3 +140,56 @@ More Information Pending
 ### Document Everything.
 
 DOCUMENT IT ALL!
+
+# Formats
+
+## Sales Reports (Dailies)
+
+### Sheets
+- MON
+- TUE
+- WED
+- THU
+- FRI
+- SAT
+- SUN
+- LUNCH DINNER SALES REPORT
+- COMP. Summary
+
+### Daily Fields
+
+J3 : Date
+
+#### Matrix
+B10 - K10 : Breakfast Row
+B11 - K11 : Lunch Row
+B12 - K12 : Dinner Row
+B10 - B12 : Food Column
+C10 - C12 : Bar (Alcohol) Column
+D10 - D12 : Bar (Non-Alcohol) Column
+F10 - F12 : Wine (Water) Column
+G10 - G12 : Wine (Wine) Column
+H10 - H12 : Tobacco Column
+I10 - I12 : MISC Column
+K10 - K12 : Other Column
+
+#### Credit Cards, Service Charge and Tips
+K21 : VISA
+K22 : MasterCard
+K24 : AMEX
+K27 : Cash Tips
+K28 : Card Tips
+K29 : Total Service
+
+#### Others
+K39 : Government Levy
+
+#### Foreign Currency
+B33 : USD
+B34 : GBP
+B35 : CAD
+
+#### Covers
+F44 : Breakfast Covers 
+F45 : Lunch Covers
+F46 : Dinner Covers
