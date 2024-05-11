@@ -2,6 +2,7 @@
 import pandas as pd
 from pandas import DataFrame
 from datetime import datetime
+from json import dumps
 
 from utils import *
 
@@ -39,6 +40,7 @@ class ReportGenerator:
         payments_df = self.get_df_from_csv(payments_filepath) 
 
         # Step 2: Run calculations on the dataframes
+        self.calculations(sales_df, payments_df)
 
         # Step 3: Save the results into the correct spreadsheeet
 
@@ -53,7 +55,23 @@ class ReportGenerator:
         df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d")
         return df
 
-    def calculations(self, sales_df: DataFrame, billing_df: DataFrame) -> dict:
+    def calculations(self, sales_df: DataFrame, payments_df: DataFrame) -> dict:
+        # Calculate total USD and BBD spent by Payment Type
+        spent_by_payment_type = self.helper.calculate_total_by_payment_type(payments_df)
+        
+        # Calculate total USD and BBD spent by Meal Type
+        
+        # Calculate total BBD spent by Meal Type sub-categories
+
+        # Calculate number of Guests by Meal Type
+
+        # Calculate Service Charge
+
+        # Calculate VAT
+
+        # Calculate Government Levy
+
+        # Calculate Deposit
         pass
 
     def render_daily_template(self, data: dict, filename: str) -> bool:
