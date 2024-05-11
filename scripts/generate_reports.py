@@ -27,11 +27,16 @@ class ReportGenerator:
 
         final_results = {}
 
-        # Step 0: Prepare the date, and load in the correct formats.
+        # Step 0: Prepare the date, and load in the correct format.
 
         target_date_string = self.date.strftime("%Y%m%d")
 
         # Step 1: Load the csv with either the provided date, or the current one into dataframes.
+        sales_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Sales-{target_date_string}.csv"
+        payments_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Payments-{target_date_string}.csv"
+
+        sales_df = self.get_df_from_csv(sales_filepath, [SalesColumnNames.DATE.value])
+        payments_df = self.get_df_from_csv(payments_filepath) 
 
         # Step 2: Run calculations on the dataframes
 
@@ -43,8 +48,10 @@ class ReportGenerator:
 
         # Step 6: Export data to QuickBooks Format.
 
-    def get_df_from_csv(self, filepath: str, format: dict) -> DataFrame:
-        pass
+    def get_df_from_csv(self, filepath: str, date_fields: list=[]) -> DataFrame:
+        self.helper.validate_file_exists(filepath)
+        df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d")
+        return df
 
     def calculations(self, sales_df: DataFrame, billing_df: DataFrame) -> dict:
         pass
