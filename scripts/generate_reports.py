@@ -3,15 +3,19 @@ import pandas as pd
 from pandas import DataFrame
 from datetime import datetime
 
-from .utils import RestaurantNames
+from .utils import RestaurantNames, ReportGeneratorHelper
 
 class ReportGenerator:
     def __init__(self, restaurant_name: RestaurantNames ):
         self.restaurant_name = restaurant_name
+        self.helper = ReportGeneratorHelper
 
     def generate_daily_report(self, date: datetime=None) -> None:
 
         final_results = {}
+
+        # Step 0: Prepare the date, and load in the correct formats.
+        target_date = date or datetime.now()
         
         # Step 1: Load the csv with either the provided date, or the current one into dataframes.
 
