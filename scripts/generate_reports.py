@@ -3,7 +3,7 @@ import pandas as pd
 from pandas import DataFrame
 from datetime import datetime
 
-from .utils import RestaurantNames, ReportGeneratorHelper
+from utils import *
 
 class ReportGenerator:
     def __init__(self, restaurant_name: RestaurantNames ):

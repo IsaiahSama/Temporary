@@ -5,7 +5,7 @@ from os.path import exists
 class ReportGeneratorHelper:
     """This class will contain any helper functions used in the report generation process."""
 
-    @staticmethod()
+    @staticmethod
     def validate_file_exists(filepath: str) -> bool:
         """
         Validates if a file exists at the given filepath.
