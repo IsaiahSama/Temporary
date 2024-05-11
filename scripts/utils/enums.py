@@ -39,8 +39,10 @@ class PaymentColumnNames(Enum):
     
     ID = "Order ID"
     STORE = "Store"
+    DATE = "Order Approved"
     PAYMENT_TYPE = "Type"
     AMOUNT = "Amt"
     CURRENCY = "Curr."
     EXCHANGE = "Exch"
     GROSS = "Order Gross"
+    SESSION = "Session"

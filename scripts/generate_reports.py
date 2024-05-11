@@ -37,7 +37,7 @@ class ReportGenerator:
         payments_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Payments-{target_date_string}.csv"
 
         sales_df_dirty = self.get_df_from_csv(sales_filepath, [SalesColumnNames.DATE.value])
-        payments_df_dirty= self.get_df_from_csv(payments_filepath) 
+        payments_df_dirty= self.get_df_from_csv(payments_filepath, [PaymentColumnNames.DATE.value]) 
 
         # Step 2 Part 1: Perform any cleanup operations on dataframes
         sales_df = self.helper.clean_sales(sales_df_dirty)

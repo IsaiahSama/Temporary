@@ -1,7 +1,8 @@
 """This module will be responsible for any helper functions used in the report generation process."""
 from os.path import exists
 from pandas import DataFrame
-from . import PaymentColumnNames, SalesColumnNames
+from . import PaymentColumnNames, SalesColumnNames, generic
+from datetime import datetime
 
 class ReportGeneratorHelper:
     """This class will contain any helper functions used in the report generation process."""
@@ -60,7 +61,7 @@ class ReportGeneratorHelper:
         return sales_df
 
     @staticmethod
-    def clean_payments(payments_df: DataFrame) -> DataFrame:
+    def clean_payments(payments_df_dirty: DataFrame) -> DataFrame:
         """
         Cleans the payments DataFrame by removing any unnecessary prefixes or suffixes from the column values.
 
@@ -70,6 +71,21 @@ class ReportGeneratorHelper:
         Returns:
             DataFrame: The cleaned payments DataFrame.
         """
+        
+        payments_df = payments_df_dirty.copy()
+
+        # Create a Session Column
+        def get_session(date: str) -> str:
+            if "PM" in date or "AM" in date:
+                dt = datetime.strptime(date, "%m/%d/%Y %I:%M:%S %p")
+            else:
+                dt = datetime.strptime(date, "%m/%d/%Y %H:%M")
+
+            hour = dt.hour
+            return generic.get_session_classification(hour)
+        
+        payments_df[PaymentColumnNames.SESSION.value] = payments_df[PaymentColumnNames.DATE.value].apply(get_session)
+
         return payments_df
 
     @staticmethod
