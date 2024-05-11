@@ -36,10 +36,14 @@ class ReportGenerator:
         sales_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Sales-{target_date_string}.csv"
         payments_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Payments-{target_date_string}.csv"
 
-        sales_df = self.get_df_from_csv(sales_filepath, [SalesColumnNames.DATE.value])
-        payments_df = self.get_df_from_csv(payments_filepath) 
+        sales_df_dirty = self.get_df_from_csv(sales_filepath, [SalesColumnNames.DATE.value])
+        payments_df_dirty= self.get_df_from_csv(payments_filepath) 
 
-        # Step 2: Run calculations on the dataframes
+        # Step 2 Part 1: Perform any cleanup operations on dataframes
+        sales_df = self.helper.clean_sales(sales_df_dirty)
+        payments_df = self.helper.clean_payments(payments_df_dirty)
+
+        # Step 2 Part 2: Run calculations on the dataframes
         self.calculations(sales_df, payments_df)
 
         # Step 3: Save the results into the correct spreadsheeet
@@ -52,7 +56,7 @@ class ReportGenerator:
 
     def get_df_from_csv(self, filepath: str, date_fields: list=[]) -> DataFrame:
         self.helper.validate_file_exists(filepath)
-        df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d")
+        df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d", )
         return df
 
     def calculations(self, sales_df: DataFrame, payments_df: DataFrame) -> dict:
