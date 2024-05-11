@@ -3,7 +3,7 @@
 This document serves as my core area for notes, and information relating to the structure and functionality of the application.
 
 # ToDo
-1. Setup Folder Structure
+1. Setup Folder Structure (In Progress)
 2. Setup Email File Extraction
 3. Develop scripts to generate Reports
 4. Create web interface for uploading and downloading reports.
@@ -56,7 +56,7 @@ A script should be created to do the following:
 - Place the files into their correct folders, doing any renaming as necessary.
 
 ### Develop Scripts to Generate Reports
-Upon retriveing the Sales and Billing reports from the emails, and them being placed in their correct folder, the script should then do the following:
+Upon retrieving the Sales and Billing reports from the emails, and them being placed in their correct folder, the script should then do the following:
 
 1. For each company, read the data from the latest Sales and Billing excel spreadsheets.
 2. Run calculations and store the following information:
