@@ -18,7 +18,8 @@ class ReportGenerator:
             None
         """
 
-        self.restaurant_name: RestaurantNames       = restaurant_name
+        self.restaurant_name: str                   = restaurant_name.value[0]
+        self.restaurant_abrv: str                   = restaurant_name.value[1]
         self.date:            datetime              = date or datetime.now()
         self.helper:          ReportGeneratorHelper = ReportGeneratorHelper
 
