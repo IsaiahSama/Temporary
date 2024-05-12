@@ -76,6 +76,15 @@ class ReportGeneratorHelper:
 
         # Create a Session Column
         def get_session(date: str) -> str:
+            """
+            Parses the input date string to extract the hour, then uses the hour to classify the session using the get_session_classification function.
+
+            Args:
+                date (str): The date string to extract the session hour from.
+
+            Returns:
+                str: The session classification based on the hour extracted from the date.
+            """
             if "PM" in date or "AM" in date:
                 dt = datetime.strptime(date, "%m/%d/%Y %I:%M:%S %p")
             else:
@@ -108,6 +117,17 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def calculate_total_by_payment_type(payments_df: DataFrame) -> dict:
+        """
+        Calculate the total amount spent by payment type.
+
+        Parameters:
+            payments_df (DataFrame): The DataFrame containing payment data.
+
+        Returns:
+            dict: A dictionary where the keys are the payment types and the values are dictionaries 
+                containing the currency as keys and the total amount spent as values.
+
+        """
         payment_totals = {}
         for _, row in payments_df.iterrows():
             payment_type = row[PaymentColumnNames.PAYMENT_TYPE.value]
@@ -127,6 +147,16 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def calculate_total_by_meal_and_payment_type(payments_df: DataFrame) -> dict:
+        """
+        Calculate the total amount spent by meal and payment type.
+
+        Parameters:
+            payments_df (DataFrame): The DataFrame containing payment data.
+
+        Returns:
+            dict: A dictionary where the keys are the session types, and the values are dictionaries 
+                containing the payment types as keys and dictionaries of currency and total amount spent as values.
+        """
         session_totals = {}
 
         for _, row in payments_df.iterrows():
@@ -152,6 +182,16 @@ class ReportGeneratorHelper:
 
     @staticmethod
     def calculate_total_by_subcategory(sales_df: DataFrame) -> dict:
+        """
+        Calculate the total amount spent by subcategory.
+
+        Parameters:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            dict: A dictionary where the keys are the session types, and the values are dictionaries 
+                containing the subcategories as keys and the total amount spent as values.
+        """
         payment_categories = {}
 
         for _, row in sales_df.iterrows():
@@ -173,6 +213,15 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def calculate_guests_by_meal_type(sales_df: DataFrame) -> dict:
+        """
+        Calculate the number of guests by meal type.
+
+        Parameters:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            dict: A dictionary where the keys are the session types and the values are the total number of guests for each session type.
+        """
         guests_by_meal = {}
 
         filtered_df = sales_df.drop_duplicates(SalesColumnNames.ID.value, keep='first')
@@ -193,12 +242,30 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def calculate_vat(sales_df: DataFrame) -> float:
+        """
+        Calculate the sum of the VAT column in the given sales DataFrame.
+
+        Args:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            float: The sum of the VAT column in the sales DataFrame. If the VAT column does not exist, returns 0.
+        """
         if SalesColumnNames.VAT.value in sales_df:
             return sales_df[SalesColumnNames.VAT.value].sum()
         return 0
     
     @staticmethod
     def calculate_levy(sales_df: DataFrame) -> float:
+        """
+        Calculates the total levy amount from the sales DataFrame.
+
+        Parameters:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            float: The total levy amount from the sales DataFrame.
+        """
         if SalesColumnNames.LEVY.value in sales_df:
             return sales_df[SalesColumnNames.LEVY.value].sum()
         return 0

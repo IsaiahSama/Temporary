@@ -46,8 +46,6 @@ class ReportGenerator:
         # Step 2 Part 2: Run calculations on the dataframes
         calculated_results = self.calculations(sales_df, payments_df)
 
-        print(dumps(calculated_results, indent=4))
-
         # Step 3: Save the results into the correct spreadsheeet
 
         # Step 4: Store data in database
@@ -57,11 +55,33 @@ class ReportGenerator:
         # Step 6: Export data to QuickBooks Format.
 
     def get_df_from_csv(self, filepath: str, date_fields: list=[]) -> DataFrame:
+        """
+        Reads a CSV file from the given filepath and returns a pandas DataFrame.
+
+        Parameters:
+            filepath (str): The path to the CSV file.
+            date_fields (list, optional): A list of column names to parse as dates. Defaults to an empty list.
+
+        Returns:
+            DataFrame: The pandas DataFrame containing the data from the CSV file.
+        """
         self.helper.validate_file_exists(filepath)
         df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d", )
         return df
 
     def calculations(self, sales_df: DataFrame, payments_df: DataFrame) -> dict:
+        """
+        Calculate various financial metrics based on the sales and payments data.
+        
+        Args:
+            sales_df (DataFrame): The DataFrame containing sales data.
+            payments_df (DataFrame): The DataFrame containing payments data.
+        
+        Returns:
+            dict: A dictionary containing the calculated metrics including total spent by payment type, 
+                total spent by meal type, total spent by meal type sub-categories, number of guests by meal type,
+                VAT, and Government Levy.
+        """
         result_dict = {}
 
         # Calculate total USD and BBD spent by Payment Type
