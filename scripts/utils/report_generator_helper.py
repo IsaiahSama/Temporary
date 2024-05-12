@@ -295,3 +295,27 @@ class ReportGeneratorHelper:
                 col = matrix_form['Columns'][subcategory]
                 controller.insert_data_into_cell(cost, f"{col}{row}")
         return None
+    
+    @staticmethod
+    def fill_card_info(spent_by_payment_type_dict: dict, card_form: dict, controller: ExcelController) -> dict:
+        
+        foreign_currency: dict = {}
+
+        for payment_type, payment_data in spent_by_payment_type_dict.items():
+            if payment_type == "Cash": continue
+
+            total = 0
+
+            for currency, amount in payment_data.items():
+                total += amount * generic.get_exch_rate(currency)
+                if currency != "BBD":
+                    if currency in foreign_currency:
+                        foreign_currency[currency] += amount
+                    else:
+                        foreign_currency[currency] = amount
+
+            cell = card_form[payment_type]
+
+            controller.insert_data_into_cell(total, cell)
+
+        return foreign_currency

@@ -19,12 +19,14 @@
         }
     },
     "Cards": {
-        "Visa": "K21",
-        "MasterCard": "K22",
-        "Amex": "K24",
+        "VISA": "K21",
+        "Master": "K22",
+        "AMEX": "K24",
         "Cash Tips": "K27",
-        "Card Tips": "K28",
-        "Total Service": "K29"
+        "Cards Tips": "K28",
+        "Total Service": "K29",
+        "Charge Account": "H21",
+        "Prepaid Deposit": "H37"
     },
     "Others": {
         "Levy": "K39"

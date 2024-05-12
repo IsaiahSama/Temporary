@@ -142,13 +142,13 @@ class ReportGenerator:
 
         # Add the data to their correct fields
         ## Set Date
-        controller.insert_data_into_cell(report_day.strftime("%m/%d/%Y"), form['Date'])
+        # controller.insert_data_into_cell(report_day.strftime("%m/%d/%Y"), form['Date'])
 
         ## Fill in the Matrix (Makes use of Sub_Category and Session fields. Prices in Barbados)
-        self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
+        # self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
 
         ## Set Card Information
-
+        self.helper.fill_card_info(data['PAYMENT_TYPE'], form['Cards'], controller)
 
         ## Set Government Levy
 
