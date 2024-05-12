@@ -177,10 +177,21 @@ class ReportGeneratorHelper:
             if isna(guests):
                 continue
             
-            print(row[SalesColumnNames.ID.value],session, guests, guests_by_meal)
             if session in guests_by_meal:
                 guests_by_meal[session] += guests
             else:
                 guests_by_meal.update({session: guests})
 
         return guests_by_meal
+    
+    @staticmethod
+    def calculate_vat(sales_df: DataFrame) -> float:
+        if SalesColumnNames.VAT.value in sales_df:
+            return sales_df[SalesColumnNames.VAT.value].sum()
+        return 0
+    
+    @staticmethod
+    def calculate_levy(sales_df: DataFrame) -> float:
+        if SalesColumnNames.LEVY.value in sales_df:
+            return sales_df[SalesColumnNames.LEVY.value].sum()
+        return 0

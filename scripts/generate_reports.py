@@ -44,7 +44,9 @@ class ReportGenerator:
         payments_df = self.helper.clean_payments(payments_df_dirty)
 
         # Step 2 Part 2: Run calculations on the dataframes
-        self.calculations(sales_df, payments_df)
+        calculated_results = self.calculations(sales_df, payments_df)
+
+        print(dumps(calculated_results, indent=4))
 
         # Step 3: Save the results into the correct spreadsheeet
 
@@ -60,6 +62,8 @@ class ReportGenerator:
         return df
 
     def calculations(self, sales_df: DataFrame, payments_df: DataFrame) -> dict:
+        result_dict = {}
+
         # Calculate total USD and BBD spent by Payment Type
         spent_by_payment_type = self.helper.calculate_total_by_payment_type(payments_df)
         
@@ -73,10 +77,21 @@ class ReportGenerator:
         guests_by_meal_type = self.helper.calculate_guests_by_meal_type(sales_df)
 
         # Calculate VAT
+        vat = self.helper.calculate_vat(sales_df)
 
         # Calculate Government Levy
+        levy = self.helper.calculate_levy(sales_df)
 
-        # Calculate Deposit
+        # Put it all together!
+
+        result_dict['PAYMENT_TYPE'] = spent_by_payment_type
+        result_dict['SESSION_TYPE'] = spent_by_session_type
+        result_dict['SUB_CATEGORY'] = spent_by_sub_categories
+        result_dict['GUESTS'] = guests_by_meal_type
+        result_dict['VAT'] = vat
+        result_dict['LEVY'] = levy
+
+        return result_dict
 
     def render_daily_template(self, data: dict, filename: str) -> bool:
         pass
