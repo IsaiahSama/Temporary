@@ -148,12 +148,16 @@ class ReportGenerator:
         # self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
 
         ## Set Card Information
-        foreign_currency = self.helper.fill_card_info(data['PAYMENT_TYPE'], form['Cards'], controller)
+        # foreign_currency = self.helper.fill_card_info(data['PAYMENT_TYPE'], form['Cards'], controller)
         
         ## Set Foreign Currencies
-        self.helper.fill_foreign_currency(foreign_currency, form['Foreign_Currency'], controller)
+        # self.helper.fill_foreign_currency(foreign_currency, form['Foreign_Currency'], controller)
+
+        ## Guest Covers
+        self.helper.fill_guest_covers(data['GUESTS'], form['Guests'], controller)
 
         ## Set Government Levy
+        controller.insert_data_into_cell(data['LEVY'], form['Others']['Levy'])
 
         # Save the workbook to a new file with the previously established filename.
         controller.save(report_filename)

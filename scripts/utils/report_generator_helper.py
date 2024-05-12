@@ -321,10 +321,20 @@ class ReportGeneratorHelper:
         return foreign_currency
     
     @staticmethod
-    def fill_foreign_currency(foreign_currency: dict, foreign_currency_form: dict, controller: ExcelController) -> None:
+    def fill_foreign_currency(foreign_currency_dict: dict, foreign_currency_form: dict, controller: ExcelController) -> None:
 
-        for currency, amount in foreign_currency.items():
+        for currency, amount in foreign_currency_dict.items():
             cell = foreign_currency_form[currency]
 
             controller.insert_data_into_cell(amount, cell)
-            
+        
+        return None
+    
+    @staticmethod
+    def fill_guest_covers(guests_covers_dict: dict, guests_covers_form: dict, controller: ExcelController) -> None:
+
+        for session, count in guests_covers_dict.items():
+            cell = guests_covers_form[session]
+            controller.insert_data_into_cell(count, cell)
+
+        return None

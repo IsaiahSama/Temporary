@@ -28,6 +28,11 @@
         "Charge Account": "H21",
         "Prepaid Deposit": "H37"
     },
+    "Guests": {
+        "Breakfast": "F44",
+        "Lunch": "F45",
+        "Dinner": "F46"
+    },
     "Others": {
         "Levy": "K39"
     },
