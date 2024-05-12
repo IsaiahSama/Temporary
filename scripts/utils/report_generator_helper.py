@@ -121,6 +121,8 @@ class ReportGeneratorHelper:
                     payment_totals[payment_type][currency] += amount
             else:
                 payment_totals.update({payment_type: {currency: amount}})
+        
+        payment_totals = {k: {currency: round(amount, 2) for currency, amount in v.items()} for k, v in payment_totals.items()}
         return payment_totals
     
     @staticmethod
@@ -143,6 +145,9 @@ class ReportGeneratorHelper:
                     session_totals[session].update({payment_type: {currency: amount}})
             else:
                 session_totals.update({session: {payment_type: {currency: amount}}})
+
+        session_totals = {k: {payment_type: {currency: round(amount, 2) for currency, amount in v.items()} for payment_type, v in session_totals_inner.items()} for k, session_totals_inner in session_totals.items()}
+
         return session_totals
 
     @staticmethod
@@ -161,6 +166,8 @@ class ReportGeneratorHelper:
                     payment_categories[session].update({category: amount})
             else:
                 payment_categories.update({session: {category: amount}})
+            
+        payment_categories = {k: {category: round(amount, 2) for category, amount in v.items()} for k, v in payment_categories.items()}
 
         return payment_categories
     
