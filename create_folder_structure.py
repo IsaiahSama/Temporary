@@ -20,6 +20,21 @@ folders = [
     "scripts/Report_Templates",
 ]
 
-for folder in folders:
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+def create_folder_structure():
+    """
+    Creates a folder structure based on the list of folders provided.
+
+    This function iterates over each folder in the `folders` list and checks if it exists in the current directory. If a folder does not exist, it creates the folder using the `os.makedirs()` function.
+
+    Parameters:
+        None
+
+    Returns:
+        None
+    """
+    for folder in folders:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
+if __name__ == "__main__":
+    create_folder_structure()
