@@ -11,7 +11,7 @@ class RestaurantNames(Enum):
 
     TIDES = ("Tides", "TPS")
     BISTRO = ("QP Bistro", "QPB")
-    CLIFF = ("The Cliff", "QPC")
+    CLIFF = ("Cliff", "QPC")
     CAFE = ("Cafe de Paris", "CDP")
 
 class SalesColumnNames(Enum):

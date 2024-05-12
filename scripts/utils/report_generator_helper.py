@@ -1,7 +1,9 @@
 """This module will be responsible for any helper functions used in the report generation process."""
+import openpyxl
 from os.path import exists
 from pandas import DataFrame, isna
 from . import PaymentColumnNames, SalesColumnNames, generic
+from .excel_controller import ExcelController
 from datetime import datetime
 
 class ReportGeneratorHelper:
@@ -98,7 +100,7 @@ class ReportGeneratorHelper:
         return payments_df
 
     @staticmethod
-    def validate_file_exists(filepath: str) -> bool:
+    def validate_file_exists(filepath: str, error: bool = True) -> bool:
         """
         Validates if a file exists at the given filepath.
 
@@ -109,11 +111,12 @@ class ReportGeneratorHelper:
             bool: True if the file exists, False otherwise.
 
         Raises:
-            FileNotFoundError: If the file does not exist.
+            FileNotFoundError: If the file does not exist, and `error` is True.
         """
         if exists(filepath):
             return True
-        raise FileNotFoundError("File in filepath: " + filepath + " does not exist")
+        if error: raise FileNotFoundError("File in filepath: " + filepath + " does not exist")
+        return False
     
     @staticmethod
     def calculate_total_by_payment_type(payments_df: DataFrame) -> dict:
@@ -269,3 +272,16 @@ class ReportGeneratorHelper:
         if SalesColumnNames.LEVY.value in sales_df:
             return sales_df[SalesColumnNames.LEVY.value].sum()
         return 0
+
+    @staticmethod
+    def create_excel_controller(filepath: str) -> ExcelController:
+        """
+        Creates an instance of the ExcelController class.
+
+        Parameters:
+            filepath (str): The filepath to the Excel file.
+
+        Returns:
+            ExcelController: An instance of the ExcelController class.
+        """
+        return ExcelController(filepath)

@@ -5,6 +5,7 @@ from datetime import datetime
 from json import dumps
 
 from utils import *
+import utils.excel_controller
 
 class ReportGenerator:
     def __init__(self, restaurant_name: RestaurantNames, date: datetime=None):
@@ -47,6 +48,7 @@ class ReportGenerator:
         calculated_results = self.calculations(sales_df, payments_df)
 
         # Step 3: Save the results into the correct spreadsheeet
+        output_path = self.render_daily_template(calculated_results)
 
         # Step 4: Store data in database
 
@@ -113,8 +115,50 @@ class ReportGenerator:
 
         return result_dict
 
-    def render_daily_template(self, data: dict, filename: str) -> bool:
-        pass
+    def render_daily_template(self, data: dict) -> str:
+        # Establish a string for the current week. Example: 31_Feb_to_6_Jan_Report.xlsx
+        template_path = f"./Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
+        
+        report_filename = generic.get_report_filename(self.date)
+
+        controller : utils.excel_controller.ExcelController | None = None
+        
+        # Load the workbook for the week, or create from template
+        if self.helper.validate_file_exists(report_filename, False):
+            controller = self.helper.create_excel_controller(report_filename)
+        else:
+            controller = self.helper.create_excel_controller(template_path)
+
+        # Get the correct day for the sheet name
+        report_day = generic.diff_days(self.date, 1)
+        sheet_name = report_day.strftime("%a").upper()
+
+        controller.change_sheet(sheet_name)
+
+        # Get the Spreadsheet Format
+        json_format = generic.parse_json_file('./Report_Format.json')
+        print(dumps(json_format, indent=4))
+
+        # Add the data to their correct fields
+        ## Set Date
+
+
+        ## Fill in the Matrix (Makes use of Sub_Category and Session fields. Prices in Barbados)
+
+
+        ## Set Card Information
+
+
+        ## Set Government Levy
+
+
+        ## Set Foreign Currencies
+
+
+        # Save the workbook to a new file with the previously established filename.
+
+
+        # Return the path to  the workbook
 
     def update_database(self, data:dict) -> None:
         pass
