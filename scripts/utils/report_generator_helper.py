@@ -319,3 +319,12 @@ class ReportGeneratorHelper:
             controller.insert_data_into_cell(total, cell)
 
         return foreign_currency
+    
+    @staticmethod
+    def fill_foreign_currency(foreign_currency: dict, foreign_currency_form: dict, controller: ExcelController) -> None:
+
+        for currency, amount in foreign_currency.items():
+            cell = foreign_currency_form[currency]
+
+            controller.insert_data_into_cell(amount, cell)
+            
