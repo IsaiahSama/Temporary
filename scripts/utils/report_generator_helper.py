@@ -288,6 +288,17 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def fill_matrix(spent_by_sub_category_dict: dict, matrix_form: dict, controller: ExcelController) -> None:
+        """
+        Fills the matrix with data from the spent_by_sub_category_dict using the matrix_form layout and the provided ExcelController.
+
+        Parameters:
+            spent_by_sub_category_dict (dict): A dictionary containing the data to be filled into the matrix.
+            matrix_form (dict): A dictionary defining the structure of the matrix.
+            controller (ExcelController): An instance of the ExcelController class to interact with the Excel sheet.
+
+        Returns:
+            None
+        """
 
         for session, session_data in spent_by_sub_category_dict.items():
             row = matrix_form['Rows'][session]
@@ -298,6 +309,17 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def fill_card_info(spent_by_payment_type_dict: dict, card_form: dict, controller: ExcelController) -> dict:
+        """
+        Fills the card information based on the spent_by_payment_type_dict, using the card_form layout and the provided ExcelController.
+
+        Parameters:
+            spent_by_payment_type_dict (dict): A dictionary containing the payment type data.
+            card_form (dict): A dictionary defining the structure of the card form.
+            controller (ExcelController): An instance of the ExcelController class to interact with the Excel sheet.
+
+        Returns:
+            dict: A dictionary containing the foreign currency information.
+        """
         
         foreign_currency: dict = {}
 
@@ -322,6 +344,17 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def fill_foreign_currency(foreign_currency_dict: dict, foreign_currency_form: dict, controller: ExcelController) -> None:
+        """
+        Fills the foreign currency information in the Excel sheet using the provided foreign currency dictionary, foreign currency form, and Excel controller.
+
+        Parameters:
+            foreign_currency_dict (dict): A dictionary containing the foreign currency information.
+            foreign_currency_form (dict): A dictionary defining the structure of the foreign currency form.
+            controller (ExcelController): An instance of the ExcelController class to interact with the Excel sheet.
+
+        Returns:
+            None
+        """
 
         for currency, amount in foreign_currency_dict.items():
             cell = foreign_currency_form[currency]
@@ -332,6 +365,17 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def fill_guest_covers(guests_covers_dict: dict, guests_covers_form: dict, controller: ExcelController) -> None:
+        """
+        Fills the guest covers in the Excel sheet using the provided guests covers dictionary, guests covers form, and Excel controller.
+
+        Parameters:
+            guests_covers_dict (dict): A dictionary containing the guest covers information.
+            guests_covers_form (dict): A dictionary defining the structure of the guests covers form.
+            controller (ExcelController): An instance of the ExcelController class to interact with the Excel sheet.
+
+        Returns:
+            None
+        """
 
         for session, count in guests_covers_dict.items():
             cell = guests_covers_form[session]

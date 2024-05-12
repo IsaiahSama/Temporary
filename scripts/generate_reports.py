@@ -26,9 +26,6 @@ class ReportGenerator:
         self.helper:          ReportGeneratorHelper = ReportGeneratorHelper
 
     def generate_daily_report(self) -> None:
-
-        final_results = {}
-
         # Step 0: Prepare the date, and load in the correct format.
 
         target_date_string = self.date.strftime("%Y%m%d")
@@ -47,10 +44,9 @@ class ReportGenerator:
         # Step 2 Part 2: Run calculations on the dataframes
         calculated_results = self.calculations(sales_df, payments_df)
 
-        print(dumps(calculated_results, indent=4))
-
         # Step 3: Save the results into the correct spreadsheeet
         output_path = self.render_daily_template(calculated_results)
+        print("Report generated and stored in " + output_path)
 
         # Step 4: Store data in database
 
@@ -118,6 +114,15 @@ class ReportGenerator:
         return result_dict
 
     def render_daily_template(self, data: dict) -> str:
+        """
+        Render the daily template for the sales report.
+
+        Parameters:
+            data (dict): A dictionary containing various data for the report.
+
+        Returns:
+            str: The path to the generated workbook.
+        """
         # Establish a string for the current week. Example: 31_Feb_to_6_Jan_Report.xlsx
         template_path = f"./Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
         
@@ -142,16 +147,16 @@ class ReportGenerator:
 
         # Add the data to their correct fields
         ## Set Date
-        # controller.insert_data_into_cell(report_day.strftime("%m/%d/%Y"), form['Date'])
+        controller.insert_data_into_cell(report_day.strftime("%m/%d/%Y"), form['Date'])
 
         ## Fill in the Matrix (Makes use of Sub_Category and Session fields. Prices in Barbados)
-        # self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
+        self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
 
         ## Set Card Information
-        # foreign_currency = self.helper.fill_card_info(data['PAYMENT_TYPE'], form['Cards'], controller)
+        foreign_currency = self.helper.fill_card_info(data['PAYMENT_TYPE'], form['Cards'], controller)
         
         ## Set Foreign Currencies
-        # self.helper.fill_foreign_currency(foreign_currency, form['Foreign_Currency'], controller)
+        self.helper.fill_foreign_currency(foreign_currency, form['Foreign_Currency'], controller)
 
         ## Guest Covers
         self.helper.fill_guest_covers(data['GUESTS'], form['Guests'], controller)
@@ -162,7 +167,8 @@ class ReportGenerator:
         # Save the workbook to a new file with the previously established filename.
         controller.save(report_filename)
 
-        # Return the path to  the workbook
+        # Return the path to the workbook
+        return report_filename
 
     def update_database(self, data:dict) -> None:
         pass
