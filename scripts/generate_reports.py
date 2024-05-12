@@ -70,15 +70,13 @@ class ReportGenerator:
         spent_by_sub_categories = self.helper.calculate_total_by_subcategory(sales_df)
 
         # Calculate number of Guests by Meal Type
-
-        # Calculate Service Charge
+        guests_by_meal_type = self.helper.calculate_guests_by_meal_type(sales_df)
 
         # Calculate VAT
 
         # Calculate Government Levy
 
         # Calculate Deposit
-        pass
 
     def render_daily_template(self, data: dict, filename: str) -> bool:
         pass

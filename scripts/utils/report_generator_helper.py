@@ -1,6 +1,6 @@
 """This module will be responsible for any helper functions used in the report generation process."""
 from os.path import exists
-from pandas import DataFrame
+from pandas import DataFrame, isna
 from . import PaymentColumnNames, SalesColumnNames, generic
 from datetime import datetime
 
@@ -163,3 +163,24 @@ class ReportGeneratorHelper:
                 payment_categories.update({session: {category: amount}})
 
         return payment_categories
+    
+    @staticmethod
+    def calculate_guests_by_meal_type(sales_df: DataFrame) -> dict:
+        guests_by_meal = {}
+
+        filtered_df = sales_df.drop_duplicates(SalesColumnNames.ID.value, keep='first')
+
+        for _, row in filtered_df.iterrows():
+            session = row[SalesColumnNames.SESSION.value]
+            guests = row[SalesColumnNames.GUESTS.value]
+
+            if isna(guests):
+                continue
+            
+            print(row[SalesColumnNames.ID.value],session, guests, guests_by_meal)
+            if session in guests_by_meal:
+                guests_by_meal[session] += guests
+            else:
+                guests_by_meal.update({session: guests})
+
+        return guests_by_meal
