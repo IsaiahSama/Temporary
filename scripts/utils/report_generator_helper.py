@@ -285,3 +285,13 @@ class ReportGeneratorHelper:
             ExcelController: An instance of the ExcelController class.
         """
         return ExcelController(filepath)
+    
+    @staticmethod
+    def fill_matrix(spent_by_sub_category_dict: dict, matrix_form: dict, controller: ExcelController) -> None:
+
+        for session, session_data in spent_by_sub_category_dict.items():
+            row = matrix_form['Rows'][session]
+            for subcategory, cost in session_data.items():
+                col = matrix_form['Columns'][subcategory]
+                controller.insert_data_into_cell(cost, f"{col}{row}")
+        return None

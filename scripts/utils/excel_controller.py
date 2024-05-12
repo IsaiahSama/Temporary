@@ -40,4 +40,29 @@ class ExcelController:
         Returns:
             None
         """
-        self.sheet = self.workbook[sheet_name]  
+        self.sheet = self.workbook[sheet_name]
+
+    def insert_data_into_cell(self, data: int | str | float, cell: str) -> None:
+        """
+        Inserts data into a cell in the workbook.
+
+        Args:
+            data (int | str | float): The data to be inserted into the cell.
+            cell (str): The cell address to insert the data.
+
+        Returns:
+            None
+        """
+        self.sheet[cell] = data
+
+    def save(self, filename: str) -> None:
+        """
+        Saves the workbook to a file.
+
+        Args:
+            filename (str): The name of the file to save the workbook to.
+
+        Returns:
+            None
+        """
+        self.workbook.save(filename)

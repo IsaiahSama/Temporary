@@ -47,6 +47,8 @@ class ReportGenerator:
         # Step 2 Part 2: Run calculations on the dataframes
         calculated_results = self.calculations(sales_df, payments_df)
 
+        print(dumps(calculated_results, indent=4))
+
         # Step 3: Save the results into the correct spreadsheeet
         output_path = self.render_daily_template(calculated_results)
 
@@ -119,7 +121,7 @@ class ReportGenerator:
         # Establish a string for the current week. Example: 31_Feb_to_6_Jan_Report.xlsx
         template_path = f"./Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
         
-        report_filename = generic.get_report_filename(self.date)
+        report_filename = generic.get_report_filename(self.date, self.restaurant_name)
 
         controller : utils.excel_controller.ExcelController | None = None
         
@@ -136,15 +138,14 @@ class ReportGenerator:
         controller.change_sheet(sheet_name)
 
         # Get the Spreadsheet Format
-        json_format = generic.parse_json_file('./Report_Format.json')
-        print(dumps(json_format, indent=4))
+        form = generic.parse_json_file('./Report_Format.json')
 
         # Add the data to their correct fields
         ## Set Date
-
+        controller.insert_data_into_cell(report_day.strftime("%m/%d/%Y"), form['Date'])
 
         ## Fill in the Matrix (Makes use of Sub_Category and Session fields. Prices in Barbados)
-
+        self.helper.fill_matrix(data['SUB_CATEGORY'], form['Matrix'], controller)
 
         ## Set Card Information
 
@@ -156,7 +157,7 @@ class ReportGenerator:
 
 
         # Save the workbook to a new file with the previously established filename.
-
+        controller.save(report_filename)
 
         # Return the path to  the workbook
 

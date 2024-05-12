@@ -4,10 +4,11 @@
         "Columns": {
             "Food": "B",
             "Alcohol": "C",
-            "Non-Alcohol": "D",
+            "Non Alcoholic": "D",
             "Water": "F",
             "Wine": "G",
             "Tobacco": "H",
+            "Cigars": "H",
             "Misc": "I",
             "Other": "K"
         },
