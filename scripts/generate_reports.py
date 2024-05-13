@@ -4,11 +4,10 @@ from pandas import DataFrame
 from datetime import datetime
 from json import dumps
 
-from utils import *
-import utils.excel_controller
+from .utils import *
 
 class ReportGenerator:
-    def __init__(self, restaurant_name: RestaurantNames, date: datetime=None):
+    def __init__(self, restaurant_name: RestaurantNames, date: datetime=None, root: str=".."):
         """
         Initializes a new instance of the ReportGenerator class.
 
@@ -24,6 +23,7 @@ class ReportGenerator:
         self.restaurant_abrv: str                   = restaurant_name.value[1]
         self.date:            datetime              = date or datetime.now()
         self.helper:          ReportGeneratorHelper = ReportGeneratorHelper
+        self.root:            str                   = root
 
     def generate_daily_report(self) -> None:
         # Step 0: Prepare the date, and load in the correct format.
@@ -31,8 +31,8 @@ class ReportGenerator:
         target_date_string = self.date.strftime("%Y%m%d")
 
         # Step 1: Load the csv with either the provided date, or the current one into dataframes.
-        sales_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Sales-{target_date_string}.csv"
-        payments_filepath = f"../documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Payments-{target_date_string}.csv"
+        sales_filepath = f"{self.root}/documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Sales-{target_date_string}.csv"
+        payments_filepath = f"{self.root}/documents/Upload/{self.restaurant_name.replace(' ', '_')}/{self.restaurant_abrv}-Payments-{target_date_string}.csv"
 
         sales_df_dirty = self.get_df_from_csv(sales_filepath, [SalesColumnNames.DATE.value])
         payments_df_dirty= self.get_df_from_csv(payments_filepath, [PaymentColumnNames.DATE.value]) 
@@ -124,11 +124,11 @@ class ReportGenerator:
             str: The path to the generated workbook.
         """
         # Establish a string for the current week. Example: 31_Feb_to_6_Jan_Report.xlsx
-        template_path = f"./Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
+        template_path = f"{self.root}/scripts/Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
         
         report_filename = generic.get_report_filename(self.date, self.restaurant_name)
 
-        controller : utils.excel_controller.ExcelController | None = None
+        controller : ExcelController | None = None
         
         # Load the workbook for the week, or create from template
         if self.helper.validate_file_exists(report_filename, False):
@@ -143,7 +143,7 @@ class ReportGenerator:
         controller.change_sheet(sheet_name)
 
         # Get the Spreadsheet Format
-        form = generic.parse_json_file('./Report_Format.json')
+        form = generic.parse_json_file(f'{self.root}/scripts/Report_Format.json')
 
         # Add the data to their correct fields
         ## Set Date

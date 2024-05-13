@@ -2,6 +2,6 @@
 
 from . import generic
 from .enums import RestaurantNames, PaymentColumnNames, SalesColumnNames
-from .report_generator_helper import ReportGeneratorHelper
+from .report_generator_helper import ReportGeneratorHelper, ExcelController
 
-__all__ = ["RestaurantNames", "PaymentColumnNames", "SalesColumnNames", "ReportGeneratorHelper", "generic"]
+__all__ = ["RestaurantNames", "PaymentColumnNames", "SalesColumnNames", "ReportGeneratorHelper", "generic", "ExcelController"]
