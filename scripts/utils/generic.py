@@ -29,7 +29,7 @@ def add_days(date1: datetime, offset:int) -> datetime:
     
 days_of_week = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     
-def get_report_filename(date: datetime, restaruant_name: str) -> str:
+def get_report_filename(date: datetime, restaruant_name: str, root:str) -> str:
     """
     Generates a filename string based on the week of the provided date.
 
@@ -45,8 +45,7 @@ def get_report_filename(date: datetime, restaruant_name: str) -> str:
     start_day = diff_days(prev_date, day)
     end_day = add_days(prev_date, 6 - day)
 
-    filename = f"../documents/Generated_Reports/{restaruant_name.replace(' ', '_')}/{date.strftime('%Y')}/{start_day.strftime('%d_%b')}_to_{end_day.strftime('%d_%b')}_Report.xlsx"
-    
+    filename = f"{root}/documents/Generated_Reports/{restaruant_name.replace(' ', '_')}/{date.strftime('%Y')}/{start_day.strftime('%d_%b')}_to_{end_day.strftime('%d_%b')}_Report.xlsx"
     return filename
 
 

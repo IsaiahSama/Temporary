@@ -21,10 +21,9 @@ class GeneratorController:
 
         # Date should be in format "MM/DD/YYYY"
         date = datetime.strptime(date_str, "%m/%d/%Y")
-        self.generator = ReportGenerator(restaruant_name, date, "")
+        self.generator = ReportGenerator(restaruant_name, date, ".")
 
     def generate_report(self):
-        
         self.generator.generate_daily_report()
 
 if __name__ == "__main__":

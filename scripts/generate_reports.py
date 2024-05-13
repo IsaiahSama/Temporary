@@ -126,7 +126,7 @@ class ReportGenerator:
         # Establish a string for the current week. Example: 31_Feb_to_6_Jan_Report.xlsx
         template_path = f"{self.root}/scripts/Report_Templates/{self.restaurant_name.replace(' ', '_')}_Sales_Report_Template.xlsx"
         
-        report_filename = generic.get_report_filename(self.date, self.restaurant_name)
+        report_filename = generic.get_report_filename(self.date, self.restaurant_name, self.root)
 
         controller : ExcelController | None = None
         
