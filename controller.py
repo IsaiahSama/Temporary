@@ -1,10 +1,15 @@
 """This module will act as a wrapper for the ReportGenerator class."""
 from tempfile import SpooledTemporaryFile
+from os.path import exists
 from scripts.generate_reports import *
+from create_folder_structure import create_folder_structure
 
 class GeneratorController:
     def __init__(self) -> None:
         self.generator : ReportGenerator | None = None 
+
+        if not exists("./documents"):
+            create_folder_structure()
 
     def set_generator(self, restaurant_key: str, date_str: str):
         """
