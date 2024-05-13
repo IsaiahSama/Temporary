@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1 class="title">Welcome to Automation Demo</h1>
+    <h2 class="subtitle">Fill out the form below to generate the report. Note that Tides does not have a template, so is temporarily disabled.</h2>
+    <div id="error" class="has-text-danger"></div>
+    <div id="notice" class="has-text-success"></div>
+    <section class="section">
+        <form id="mainForm">
+            <div id="meta" class="is-flex is-justify-content-space-around my-5 is-align-items-center">
+                <div class="select">
+                    <select id="location">
+                        <option value="---">Choose Location</option>
+                        <option value="TIDES" disabled>Tides</option>
+                        <option value="BISTRO">QP Bistro</option>
+                        <option value="CLIFF">The Cliff</option>
+                        <option value="CAFE">Cafe de Paris</option>
+                    </select>
+                </div>
+                <div class="">
+                    <label for="date" class="label">Report Date</label>
+                    <input type="date" name="date" id="date" required />
+                </div>
+            </div>
+
+            <div id="files" class="is-flex is-justify-content-space-around">
+                <div class="file is-boxed">
+                    <label class="file-label">
+                        <input class="" type="file" id="sales" accept=".csv" required />
+                        <span class="file-cta">
+                            <span class="file-label"> Upload Sales File </span>
+                        </span>
+                    </label>
+                </div>
+                <div class="file is-boxed">
+                <label class="file-label">
+                    <input class="" type="file" id="payments" accept=".csv" required />
+                    <span class="file-cta">
+                        <span class="file-label"> Upload Payments File </span>
+                    </span>
+                </label>
+                </div>
+            </div>
+
+            <div class="control">
+                <button class="button is-primary is-fullwidth" id="submit">Generate Report</button>
+            </div>
+        </form>
+    </section>
+
+    <script>
+        const setError = (msg) => {
+            document.getElementById("error").innerHTML = "An error has occurred." + msg
+        }
+
+        document.getElementById("mainForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            document.getElementById("error").innerHTML = "";
+            document.getElementById("notice").innerHTML = "";
+
+            const error = document.getElementById("error");
+
+            const date = document.getElementById("date").value;
+            const location = document.getElementById("location").value;
+            const sales = document.getElementById("sales").files[0];
+            const payments = document.getElementById("payments").files[0];
+
+            const today = new Date();
+            const reportDate = new Date(date);
+            if (reportDate > today) {
+                setError("Report date cannot be in the future");
+                return;
+            }
+
+            if (location === "---") {
+                setError("Please select a location");
+                return;
+            }            
+
+            const button = document.getElementById("submit");
+            button.disabled = true;
+            button.innerHTML = "Generating Report...";
+
+            const handle = async () => {
+                const formData = new FormData();
+                formData.append("date", date);
+                formData.append("location", location);
+                formData.append("sales", sales);
+                formData.append("payments", payments);
+
+                const response = await fetch("/generate", {
+                    method: "POST",
+                    body: formData
+                })
+
+                const responseData = await response.json();
+
+                if ("error" in responseData) {
+                    console.log(responseData.error);
+                    setError(responseData.error);
+                    button.disabled = false;
+                    button.innerHTML = "Generate Report";
+                    return
+                }
+
+                file = responseData.file
+                console.log(file);
+                document.getElementById('notice').innerHTML = responseData.message;
+                document.getElementById('notice').innerHTML += `<br><a href="${file.path}">Download Report</a>`
+                button.disabled = false;
+                button.innerHTML = "Generate Report";
+            }
+
+            handle()
+            event.target.reset();
+            
+        })
+    </script>
+{% endblock %}

@@ -1,4 +1,5 @@
 """This module will act as a wrapper for the ReportGenerator class."""
+from tempfile import SpooledTemporaryFile
 from scripts.generate_reports import *
 
 class GeneratorController:
@@ -24,7 +25,14 @@ class GeneratorController:
         self.generator = ReportGenerator(restaruant_name, date, ".")
 
     def generate_report(self):
-        self.generator.generate_daily_report()
+        return self.generator.generate_daily_report()
+
+    def upload_file(self, file: SpooledTemporaryFile, filemode: str ):
+        if filemode not in ["Sales", "Payments"]:
+            raise ValueError("File mode must be either 'Sales' or 'Payments'.")
+        
+        with open(f"./documents/Upload/{self.generator.restaurant_name.replace(' ', '_')}/{self.generator.restaurant_abrv}-{filemode}-{self.generator.date.strftime('%Y%m%d')}.csv", "wb") as f:
+            f.write(file.read())
 
 if __name__ == "__main__":
     controller = GeneratorController()

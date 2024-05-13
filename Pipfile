@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 pandas = "*"
+fastapi = {extras = ["all"], version = "*"}
+uvicorn = "*"
 
 [dev-packages]
 

@@ -25,7 +25,7 @@ class ReportGenerator:
         self.helper:          ReportGeneratorHelper = ReportGeneratorHelper
         self.root:            str                   = root
 
-    def generate_daily_report(self) -> None:
+    def generate_daily_report(self) -> str:
         # Step 0: Prepare the date, and load in the correct format.
 
         target_date_string = self.date.strftime("%Y%m%d")
@@ -53,6 +53,7 @@ class ReportGenerator:
         # Step 5: Create the Rolling 8 Week Report
 
         # Step 6: Export data to QuickBooks Format.
+        return output_path
 
     def get_df_from_csv(self, filepath: str, date_fields: list=[]) -> DataFrame:
         """
