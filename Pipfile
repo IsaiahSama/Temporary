@@ -8,6 +8,7 @@ python-dotenv = "*"
 pandas = "*"
 fastapi = {extras = ["all"], version = "*"}
 uvicorn = "*"
+openpyxl = "*"
 
 [dev-packages]
 
