@@ -1,6 +1,6 @@
 """This module will contain the necessary Enums used for typehinting"""
 from enum import Enum 
-
+from .errors import InvalidRestaurantNameException
 
 class RestaurantNames(Enum):
     """
@@ -13,6 +13,28 @@ class RestaurantNames(Enum):
     BISTRO = ("QP Bistro", "QPB")
     CLIFF = ("Cliff", "QPC")
     CAFE = ("Cafe de Paris", "CDP")
+
+    @staticmethod
+    def get_restaurant_by_name(name: str):
+        restaurant = None 
+
+        for _, value in RestaurantNames.__members__.items():
+            if value.value[0] == name:
+                restaurant = value
+                break
+
+        if restaurant is None:
+            raise InvalidRestaurantNameException(f"Found no restaurant with name: {name}")
+
+        return restaurant
+
+    @staticmethod
+    def get_restaurant_by_key(key: str):
+        try:
+            return RestaurantNames[key]
+        except KeyError:
+            raise InvalidRestaurantNameException(f"Found no restaurant with Key: {key}")
+
 
 class SalesColumnNames(Enum):
     """
