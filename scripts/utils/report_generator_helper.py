@@ -2,7 +2,7 @@
 import openpyxl
 from os.path import exists
 from pandas import DataFrame, isna
-from . import PaymentColumnNames, SalesColumnNames, generic
+from . import PaymentColumnNames, SalesColumnNames, generic, errors
 from .excel_controller import ExcelController
 from datetime import datetime
 
@@ -287,6 +287,45 @@ class ReportGeneratorHelper:
         return ExcelController(filepath)
     
     @staticmethod
+    def parse_cell(data_key: str, cell_info: str | dict, controller: ExcelController) -> str:
+        """
+        Parses a cell in the Excel sheet and returns the cell location.
+
+        Parameters:
+            data_key (str): The key to access the data.
+            cell_info (str | dict): Either the cell reference, or a dictionary containing other meta information
+            controller (ExcelController): The Excel controller to interact with the Excel sheet.
+
+        Returns:
+            str: The cell location.
+
+        Raises:
+            InvalidReportFormatException: If the title format in the Report_Format.json is invalid.
+        """
+        if type(cell_info) == dict:
+            if "FIELD" in cell_info:
+                cell_loc = cell_info["FIELD"]
+            if "TITLE" in cell_info:
+                title = cell_info["TITLE"]
+                if type(title) is dict and "VAL" in title and "REF" in title:
+                    controller.insert_data_into_cell(title["VAL"], title["REF"]) 
+                elif type(title) == str:
+                    controller.insert_data_into_cell(data_key, cell_info["TITLE"])
+                else:
+                    raise errors.InvalidReportFormatException(f"Invalid title format for {title} in the Report_Format.json. Expected a dictionary with 'VAL' and 'REF', where 'VAL' is a named title, and 'REF' is the cell to store the title in, or a string containing the cell reference.")
+            
+            if "FIELDS" in cell_info:
+                for field_data in cell_info["FIELDS"][:-1]:
+                    cell = ReportGeneratorHelper.parse_cell(data_key, field_data, controller)
+                    if cell:
+                        controller.insert_data_into_cell(cell_info, cell)
+                cell_loc = ReportGeneratorHelper.parse_cell(data_key, cell_info["FIELDS"][-1], controller)
+        if type(cell_info) == str:
+            cell_loc = cell_info
+
+        return cell_loc
+    
+    @staticmethod
     def fill_matrix(spent_by_sub_category_dict: dict, matrix_form: dict, controller: ExcelController) -> None:
         """
         Fills the matrix with data from the spent_by_sub_category_dict using the matrix_form layout and the provided ExcelController.
@@ -304,7 +343,8 @@ class ReportGeneratorHelper:
             row = matrix_form['Rows'][session]
             for subcategory, cost in session_data.items():
                 col = matrix_form['Columns'][subcategory]
-                controller.insert_data_into_cell(cost, f"{col}{row}")
+                cell = ReportGeneratorHelper.parse_cell(subcategory, f"{col}{row}", controller)
+                controller.insert_data_into_cell(cost, cell)
         return None
     
     @staticmethod
@@ -336,8 +376,7 @@ class ReportGeneratorHelper:
                     else:
                         foreign_currency[currency] = amount
 
-            cell = card_form[payment_type]
-
+            cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
             controller.insert_data_into_cell(total, cell)
 
         return foreign_currency
