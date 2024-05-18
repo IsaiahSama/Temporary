@@ -55,7 +55,7 @@ class ReportGeneratorHelper:
             """
             split_category = category.split('/')
             if len(split_category) > 2: return split_category[2]
-            else: return "Other"
+            else: return "Misc"
 
         category_key = SalesColumnNames.CATEGORY.value
         sales_df[category_key] = sales_df[category_key].apply(clean_category)

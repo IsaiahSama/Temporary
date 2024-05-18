@@ -41,5 +41,5 @@ class GeneratorController:
 
 if __name__ == "__main__":
     controller = GeneratorController()
-    controller.set_generator("BISTRO", "05/09/2024")
+    controller.set_generator("BISTRO", "05/14/2024")
     controller.generate_report()

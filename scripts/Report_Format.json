@@ -3,14 +3,17 @@
     "Matrix": {
         "Columns": {
             "Food": "B",
+            "Finger Food": "B",
             "Alcohol": "C",
             "Non Alcoholic": "D",
+            "Beverages": "D",
             "Water": "F",
             "Wine": "G",
             "Tobacco": "H",
             "Cigars": "H",
             "Misc": "I",
-            "Other": "K"
+            "Other": "K",
+            "Fees": "K"
         },
         "Rows": {
             "Breakfast": "10",
@@ -19,14 +22,36 @@
         }
     },
     "Cards": {
+        "Charge Account": {
+            "TITLE": "E21",
+            "FIELD": "H21"
+        },
+        "Pending Payments": {
+            "TITLE": "E22",
+            "FIELD": "H22"
+        },
+        "Charge Account Tips": {
+            "TITLE": "E23",
+            "FIELD": "H23"
+        },
+        "Vouchers": "H29",
+        "Prepaid Deposit": {
+            "TITLE": "E37",
+            "FIELD": "H37"
+        },
+        "Bank Wires": {
+            "TITLE": "E38",
+            "FIELD": "H38"
+        },
         "VISA": "K21",
+        "Discover": "K21",
         "Master": "K22",
         "AMEX": "K24",
         "Cash Tips": "K27",
         "Cards Tips": "K28",
         "Total Service": "K29",
-        "Charge Account": "H21",
-        "Prepaid Deposit": "H37"
+        "Debit Cards": "K35",
+        "Cheque": "S39"
     },
     "Guests": {
         "Breakfast": "F44",
