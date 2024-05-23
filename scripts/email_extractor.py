@@ -6,6 +6,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+from json import dumps
+
 from datetime import datetime
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -84,6 +86,8 @@ class EmailExtractor:
         service = build("gmail", "v1", credentials=self.creds)
         results = service.users().messages().list(userId="me", maxResults=n).execute()
 
+        filtered = []
+
         for result in results["messages"]:
             msg = service.users().messages().get(userId="me", id=result["id"]).execute()
 
@@ -93,14 +97,31 @@ class EmailExtractor:
             body = payload['body']
 
             subject = [h['value'] for h in headers if h['name'] == 'Subject'][0]
-            print(subject)
-            print(body)
-            print("---------" * 5)
-            print()
+            if "QB Checks" in subject:
+                filtered.append(payload)
+            
+        chosen = filtered[0]
+        attachments = [part for part in chosen['parts'] if part['mimeType'] == 'text/csv']
+        print(dumps(attachments, indent=4))
 
+        filenames = []
+
+        for attachment in attachments:
+            filename = '-'.join([word.strip() for word in attachment['filename'].split("-")]).split("-")
+            temp = {
+                "KEY": filename[0],
+                "MODE": filename[1],
+                "DATE": filename[2].split(".")[0]
+            }      
+
+            temp["DATE"] = datetime.strptime(temp['DATE'], "%Y%m%d").strftime("%d_%m_%Y")
+
+            print(temp)
+
+        print(filenames)
             # internal_date = datetime.fromtimestamp(int(msg['internalDate'])/1000)
             # print(subject, internal_date.strftime("%a, %d %b %Y %H:%M:%S"))
 
 if __name__ == "__main__":
     extractor = EmailExtractor()
-    extractor.get_last_n_emails(10)
+    extractor.get_last_n_emails(20)
