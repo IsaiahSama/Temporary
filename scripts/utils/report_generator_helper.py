@@ -90,7 +90,10 @@ class ReportGeneratorHelper:
             if "PM" in date or "AM" in date:
                 dt = datetime.strptime(date, "%m/%d/%Y %I:%M:%S %p")
             else:
-                dt = datetime.strptime(date, "%m/%d/%Y %H:%M")
+                try:
+                    dt = datetime.strptime(date, "%m/%d/%Y %H:%M")
+                except ValueError:
+                    dt = datetime.strptime(date, "%m/%d/%Y")
 
             hour = dt.hour
             return generic.get_session_classification(hour)
