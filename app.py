@@ -5,6 +5,8 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 from controller import GeneratorController
+from os.path import exists
+from os import mkdir
 
 app = FastAPI()
 
@@ -31,6 +33,7 @@ async def generate(
         controller.upload_file(sales.file, "Sales")
         controller.upload_file(payments.file, "Payments")
         result_file_path = controller.generate_report()
+
         print("Report generated and stored in " + result_file_path)
     except KeyError as e:
         print("KeyError", e)
@@ -39,7 +42,12 @@ async def generate(
         print(e)
         return {"error": e}
     
-    static_filepath = "./static/" + result_file_path.split('/')[-1]
+    restaurant_name = controller.generator.restaurant_name.upper()
+
+    if not exists(f"./static/{restaurant_name}"):
+        mkdir("./static/" + restaurant_name)
+
+    static_filepath = f"./static/{restaurant_name}" + result_file_path.split('/')[-1]
     with open(result_file_path, "rb") as f:
         with open(static_filepath, "wb") as f2:
             f2.write(f.read())
