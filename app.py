@@ -18,12 +18,13 @@ async def index(request: Request):
 
 @app.post("/generate")
 async def generate(
-    date: str = Form(...),
     location: str = Form(...),
     sales: UploadFile = File(...),
     payments: UploadFile = File(...),
 ):
-    date_obj = datetime.strptime(date, "%Y-%m-%d")
+    file_date = sales.filename.split("-")[-1].split(".")[0]
+    date_obj = datetime.strptime(file_date, "%Y%m%d")
+    
     try:
         controller = GeneratorController()
         controller.set_generator(location, date_obj.strftime("%m/%d/%Y"))
