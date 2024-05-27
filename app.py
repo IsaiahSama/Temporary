@@ -47,7 +47,7 @@ async def generate(
     if not exists(f"./static/{restaurant_name}"):
         mkdir("./static/" + restaurant_name)
 
-    static_filepath = f"./static/{restaurant_name}" + result_file_path.split('/')[-1]
+    static_filepath = f"./static/{restaurant_name}/" + result_file_path.split('/')[-1]
     with open(result_file_path, "rb") as f:
         with open(static_filepath, "wb") as f2:
             f2.write(f.read())
