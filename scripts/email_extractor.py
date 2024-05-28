@@ -18,7 +18,7 @@ except ImportError:
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
 class EmailExtractor:
-    def __init__(self):
+    def __init__(self, root:str=".."):
         """
         Initializes the EmailExtractor class.
 
@@ -30,6 +30,7 @@ class EmailExtractor:
         Returns:
             None
         """
+        self.root = root
         self.creds: Credentials = self.get_credentials()
     
     def get_credentials(self) -> Credentials:
@@ -48,12 +49,12 @@ class EmailExtractor:
         # created automatically when the authorization flow completes for the first
         # time.
 
-        if not os.path.exists("credentials.json"):
+        if not os.path.exists(f"{self.root}/credentials.json"):
             raise Exception("credentials.json not found")
 
         creds: Credentials = None
-        if os.path.exists("token.json"):
-            creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+        if os.path.exists(f"{self.root}/token.json"):
+            creds = Credentials.from_authorized_user_file(f"{self.root}/token.json", SCOPES)
 
         # If there are no (valid) credentials available, let the user log in.
         if not creds or not creds.valid:
@@ -61,31 +62,29 @@ class EmailExtractor:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES
+                    f"{self.root}/credentials.json", SCOPES
                 )
                 creds = flow.run_local_server(port=0)
 
             # Save the credentials for the next run
-            with open("token.json", "w") as token:
+            with open(f"{self.root}/token.json", "w") as token:
                 token.write(creds.to_json())
 
         return creds
     
-    def get_last_n_emails(self, n: int, root:str="..") -> list:
+    def get_last_n_emails(self, n: int) -> datetime:
         """
         Retrieves the last `n` emails from the user's inbox.
 
-        This function retrieves the `n` most recent emails from the user's inbox using the Gmail API. The `n` parameter specifies the number of emails to retrieve.
+        This function retrieves the `n` most recent emails from the user's inbox
+        using the Gmail API. The `n` parameter specifies the number of emails to
+        retrieve.
 
-        Parameters:
+        Args:
             n (int): The number of emails to retrieve.
 
         Returns:
-            list: A list of dictionaries containing information about the retrieved emails. Each dictionary contains the following keys:
-                - `sender`: The email address of the sender.
-                - `subject`: The subject of the email.
-                - `body`: The body of the email.
-                - `attachments`: The attachments on the email
+            datetime: The date of the first email retrieved.
         """
 
         service = build("gmail", "v1", credentials=self.creds)
@@ -99,17 +98,14 @@ class EmailExtractor:
             payload = msg['payload']
             headers = payload['headers']
 
-            body = payload['body']
-
             subject = [h['value'] for h in headers if h['name'] == 'Subject'][0]
             if "QB Checks" in subject:
                 payload['messageID'] = result['id']
                 filtered.append(payload)
             
+        first_date = None
         for payload in filtered:
             attachments = [part for part in payload['parts'] if part['mimeType'] == 'text/csv']
-
-            files = []
 
             for attachment in attachments:
                 filename = '-'.join([word.strip() for word in attachment['filename'].split("-")])
@@ -124,15 +120,18 @@ class EmailExtractor:
                 }      
 
                 file_info["DATE"] = datetime.strptime(file_info['DATE'], "%Y%m%d").strftime("%d_%m_%Y")
+                if first_date is None: 
+                    first_date = datetime.strptime(file_info['DATE'], "%d_%m_%Y")
 
                 file_id = file_info['ID']
 
                 file = service.users().messages().attachments().get(userId="me", messageId=file_info['messageID'], id=file_id).execute()
                 
-                stored_filename = f"{root}/documents/Upload/{RestaurantNames.get_restaurant_by_abrv(file_info['KEY']).value[0].replace(' ', '_')}/{file_info['filename']}"
+                stored_filename = f"{self.root}/documents/Upload/{RestaurantNames.get_restaurant_by_abrv(file_info['KEY']).value[0].replace(' ', '_')}/{file_info['filename']}"
                 with open(stored_filename, "wb") as f:
                     f.write(base64.urlsafe_b64decode(file['data'].encode('utf-8')))
             
+        return first_date
 
 if __name__ == "__main__":
     extractor = EmailExtractor()
