@@ -39,8 +39,8 @@ def get_report_filename(date: datetime, restaruant_name: str, restaurant_abrv: s
     Returns:
         str: The filename string formatted as 'start_day_to_end_day_Report.xlsx'.
     """
-    # prev_date = diff_days(date, 1)
-    prev_date = date
+    prev_date = diff_days(date, 1)
+    # prev_date = date
 
     day = prev_date.weekday()
 
