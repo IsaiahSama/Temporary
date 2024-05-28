@@ -1,3 +1,4 @@
+import base64
 import os.path
 
 from google.auth.transport.requests import Request
@@ -7,8 +8,12 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 from json import dumps
-
 from datetime import datetime
+
+try:
+    from .utils.enums import RestaurantNames
+except ImportError:
+    from utils.enums import RestaurantNames
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 
@@ -66,7 +71,7 @@ class EmailExtractor:
 
         return creds
     
-    def get_last_n_emails(self, n: int) -> list:
+    def get_last_n_emails(self, n: int, root:str="..") -> list:
         """
         Retrieves the last `n` emails from the user's inbox.
 
@@ -98,30 +103,37 @@ class EmailExtractor:
 
             subject = [h['value'] for h in headers if h['name'] == 'Subject'][0]
             if "QB Checks" in subject:
+                payload['messageID'] = result['id']
                 filtered.append(payload)
             
-        chosen = filtered[0]
-        attachments = [part for part in chosen['parts'] if part['mimeType'] == 'text/csv']
-        print(dumps(attachments, indent=4))
+        for payload in filtered:
+            attachments = [part for part in payload['parts'] if part['mimeType'] == 'text/csv']
 
-        filenames = []
+            files = []
 
-        for attachment in attachments:
-            filename = '-'.join([word.strip() for word in attachment['filename'].split("-")]).split("-")
-            temp = {
-                "KEY": filename[0],
-                "MODE": filename[1],
-                "DATE": filename[2].split(".")[0]
-            }      
+            for attachment in attachments:
+                filename = '-'.join([word.strip() for word in attachment['filename'].split("-")])
+                split_filename = filename.split("-")
+                file_info = {
+                    "KEY": split_filename[0],
+                    "MODE": split_filename[1],
+                    "DATE": split_filename[2].split(".")[0],
+                    "ID": attachment['body']['attachmentId'],
+                    "filename": filename,
+                    "messageID": payload['messageID']
+                }      
 
-            temp["DATE"] = datetime.strptime(temp['DATE'], "%Y%m%d").strftime("%d_%m_%Y")
+                file_info["DATE"] = datetime.strptime(file_info['DATE'], "%Y%m%d").strftime("%d_%m_%Y")
 
-            print(temp)
+                file_id = file_info['ID']
 
-        print(filenames)
-            # internal_date = datetime.fromtimestamp(int(msg['internalDate'])/1000)
-            # print(subject, internal_date.strftime("%a, %d %b %Y %H:%M:%S"))
+                file = service.users().messages().attachments().get(userId="me", messageId=file_info['messageID'], id=file_id).execute()
+                
+                stored_filename = f"{root}/documents/Upload/{RestaurantNames.get_restaurant_by_abrv(file_info['KEY']).value[0].replace(' ', '_')}/{file_info['filename']}"
+                with open(stored_filename, "wb") as f:
+                    f.write(base64.urlsafe_b64decode(file['data'].encode('utf-8')))
+            
 
 if __name__ == "__main__":
     extractor = EmailExtractor()
-    extractor.get_last_n_emails(20)
+    extractor.get_last_n_emails(30)
