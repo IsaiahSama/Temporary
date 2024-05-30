@@ -11,4 +11,7 @@ companies = ["TIDES", "BISTRO", "CLIFF", "CAFE"]
 controller = GeneratorController()
 for company in companies:
     controller.set_generator(company, first_date.strftime("%m/%d/%Y"))
-    controller.generate_report()
+    try:
+        controller.generate_report()
+    except FileNotFoundError:
+        continue

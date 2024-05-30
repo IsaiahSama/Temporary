@@ -87,6 +87,7 @@ class ReportGeneratorHelper:
             Returns:
                 str: The session classification based on the hour extracted from the date.
             """
+            if isna(date): return None
             if "PM" in date or "AM" in date:
                 dt = datetime.strptime(date, "%m/%d/%Y %I:%M:%S %p")
             else:
