@@ -130,6 +130,7 @@ class EmailExtractor:
                 stored_filename = f"{self.root}/documents/Upload/{RestaurantNames.get_restaurant_by_abrv(file_info['KEY']).value[0].replace(' ', '_')}/{file_info['filename']}"
                 with open(stored_filename, "wb") as f:
                     f.write(base64.urlsafe_b64decode(file['data'].encode('utf-8')))
+                    print("Downloaded " + stored_filename)
             
         return first_date
 

@@ -1,6 +1,6 @@
 """This module will contain the necessary Enums used for typehinting"""
 from enum import Enum 
-from .errors import InvalidRestaurantNameException
+from .custom_exceptions import InvalidRestaurantNameException
 
 class RestaurantNames(Enum):
     """

@@ -4,7 +4,7 @@ from fastapi.responses import FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
-from controller import GeneratorController
+from daily_gen import GeneratorController
 from os.path import exists
 from os import mkdir
 

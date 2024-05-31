@@ -63,11 +63,20 @@ class ReportGenerator:
             filepath (str): The path to the CSV file.
             date_fields (list, optional): A list of column names to parse as dates. Defaults to an empty list.
 
+        Raises:
+            CustomExceptions.BadlyFormattedCSVException: If the CSV file is badly formatted.
+
         Returns:
             DataFrame: The pandas DataFrame containing the data from the CSV file.
         """
         self.helper.validate_file_exists(filepath)
-        df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d", )
+        try:
+            df = pd.read_csv(filepath, parse_dates=date_fields, date_format="%Y-%m-%d")
+        except pd.errors.ParserError as e:
+            raise CustomExceptions.BadlyFormattedCSVException(f"Error parsing CSV File in {filepath}. CSV is most likely corrupted. More details: {e}")
+        except ValueError as e:
+            raise CustomExceptions.BadlyFormattedCSVException(f"Error parsing CSV File in {filepath}. Some data may be missing. More details: {e}")
+
         return df
 
     def calculations(self, sales_df: DataFrame, payments_df: DataFrame) -> dict:

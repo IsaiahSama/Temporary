@@ -2,7 +2,7 @@
 import openpyxl
 from os.path import exists
 from pandas import DataFrame, isna
-from . import PaymentColumnNames, SalesColumnNames, generic, errors
+from . import PaymentColumnNames, SalesColumnNames, custom_exceptions, generic
 from .excel_controller import ExcelController
 from datetime import datetime
 
@@ -316,7 +316,7 @@ class ReportGeneratorHelper:
                 elif type(title) == str:
                     controller.insert_data_into_cell(data_key, cell_info["TITLE"])
                 else:
-                    raise errors.InvalidReportFormatException(f"Invalid title format for {title} in the Report_Format.json. Expected a dictionary with 'VAL' and 'REF', where 'VAL' is a named title, and 'REF' is the cell to store the title in, or a string containing the cell reference.")
+                    raise custom_exceptions.InvalidReportFormatException(f"Invalid title format for {title} in the Report_Format.json. Expected a dictionary with 'VAL' and 'REF', where 'VAL' is a named title, and 'REF' is the cell to store the title in, or a string containing the cell reference.")
             
             if "FIELDS" in cell_info:
                 for field_data in cell_info["FIELDS"][:-1]:
