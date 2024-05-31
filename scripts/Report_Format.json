@@ -25,15 +25,12 @@
         "Charge Account": {
             "TITLE": "E21",
             "FIELD": "H21"
-        },
+        }, 
         "Pending Payments": {
             "TITLE": "E22",
             "FIELD": "H22"
         },
-        "Charge Account Tips": {
-            "TITLE": {"VAL": "Tips", "REF": "E23"},
-            "FIELD": "H23"
-        },
+        "Charge Account Tips": "K27",
         "Vouchers": "H29",
         "Prepaid Deposit": {
             "TITLE": "E37",
