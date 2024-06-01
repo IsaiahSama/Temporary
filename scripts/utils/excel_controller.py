@@ -63,6 +63,18 @@ class ExcelController:
         """
         self.sheet = self.workbook[sheet_name]
 
+    def insert_col(self, idx:int) -> None:
+        """
+        Inserts a column in the workbook.
+
+        Args:
+            col (str): The column to be inserted.
+
+        Returns:
+            None
+        """
+        self.sheet.insert_cols(idx)
+
     def insert_data_into_cell(self, data: int | str | float, cell: str) -> None:
         """
         Inserts data into a cell in the workbook.

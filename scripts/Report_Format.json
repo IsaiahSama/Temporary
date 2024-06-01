@@ -66,10 +66,17 @@
     "LDSP": {
         "SHEET": "LUNCH DINNER SALES REPORT",
         "TOTALS": "I",
-        "START": "6",
-        "END": "35",
+        "START": 6,
+        "END": 29,
         "SUMMARY": "B",
-        "SUMMARY_START": "39",
-        "SUMMARY_END": "51"
+        "SUMMARY_START": 41,
+        "SUMMARY_END": 51
+    },
+    "COMP_SUMMARY": {
+        "SHEET": "Comp. Summary",
+        "WEEK": "B5",
+        "COL": "B",
+        "START": 6,
+        "END": 43
     }
 }

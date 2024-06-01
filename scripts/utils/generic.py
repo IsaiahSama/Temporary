@@ -44,11 +44,24 @@ def get_report_filename(date: datetime, restaruant_name: str, restaurant_abrv: s
 
     day = prev_date.weekday()
 
-    start_day = diff_days(prev_date, day)
-    end_day = add_days(prev_date, 6 - day)
+    start_day, end_day = get_week_period(prev_date)
 
     filename = f"{root}/documents/Generated_Reports/{restaruant_name.replace(' ', '_')}/{date.strftime('%Y')}/{restaurant_abrv}_{start_day.strftime('%d_%b')}_to_{end_day.strftime('%d_%b')}_Report.xlsx"
     return filename
+
+def get_week_period(date: datetime) -> tuple[datetime, datetime]:
+    """
+    Returns the start and end dates of the week that the provided date belongs to.
+
+    Parameters:
+        date (datetime): The date to determine the week period.
+
+    Returns:
+        tuple[datetime, datetime]: A tuple containing the start and end dates of the week.
+    """
+    start_day = diff_days(date, date.weekday())
+    end_day = add_days(date, 6 - date.weekday())
+    return start_day, end_day
 
 
 def parse_json_file(file_path: str) -> dict:
