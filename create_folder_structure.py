@@ -2,6 +2,7 @@ import os
 
 folders = [
     "documents",
+    "documents/Summaries",
     "documents/Generated_Reports",
     "documents/Generated_Reports/Cafe_de_Paris",
     "documents/Generated_Reports/Cafe_de_Paris/2024",
