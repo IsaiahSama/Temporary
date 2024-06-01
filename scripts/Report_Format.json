@@ -62,5 +62,14 @@
         "USD": "B33",
         "GBP": "B34",
         "CAD": "B35"
+    },
+    "LDSP": {
+        "SHEET": "LUNCH DINNER SALES REPORT",
+        "TOTALS": "I",
+        "START": "6",
+        "END": "35",
+        "SUMMARY": "B",
+        "SUMMARY_START": "39",
+        "SUMMARY_END": "51"
     }
 }

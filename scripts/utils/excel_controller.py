@@ -1,10 +1,11 @@
 """This module is responsible for the manipulation of workbooks."""
 import openpyxl
+import xlwings
 
 class ExcelController:
     """This class is responsible for the manipulation of workbooks."""
 
-    def __init__(self, file_path: str) -> None:
+    def __init__(self, file_path: str, data_only=False) -> None:
         """
         Initializes a new instance of the ExcelController class.
 
@@ -15,20 +16,40 @@ class ExcelController:
             None
         """
         self.file_path: str = file_path
-        self.workbook : openpyxl.Workbook = self.load_workbook(file_path)
+        self.workbook : openpyxl.Workbook = self.load_workbook(file_path, data_only)
         self.sheet = self.workbook.active
 
-    def load_workbook(self, file_path: str) -> openpyxl.Workbook:
+
+    def load_workbook(self, file_path: str, data_only=False) -> openpyxl.Workbook:
         """
         Loads an Excel workbook from a file path.
 
         Args:
             file_path (str): The path to the Excel file.
+            data_only (bool, optional): Whether to load the data only or not. Defaults to False.
 
         Returns:
             openpyxl.Workbook: The loaded workbook.
         """
-        return openpyxl.load_workbook(file_path)
+        if data_only:
+            self.parse_data_only(file_path)
+        return openpyxl.load_workbook(file_path, data_only=data_only)
+    
+    def parse_data_only(self, file_path: str):
+        """
+        Parses the data from an Excel file by opening it with xlwings, saving it, and closing it.
+
+        Args:
+            file_path (str): The path to the Excel file.
+
+        Returns:
+            None
+        """
+        app = xlwings.App(visible=False)
+        book = app.books.open(file_path)
+        book.save()
+        book.close()
+        app.quit()
     
     def change_sheet(self, sheet_name: str) -> None:
         """
@@ -58,6 +79,18 @@ class ExcelController:
             self.sheet[cell] = prev_value + data
         else:
             self.sheet[cell] = data
+
+    def read_from_cell(self, cell:str) -> str:
+        """
+        Reads data from a cell in the workbook.
+
+        Args:
+            cell (str): The cell address to read data from. Should be in the format "A1".
+
+        Returns:
+            str: The data read from the cell.
+        """
+        return self.sheet[cell].value
 
     def save(self, filename: str) -> None:
         """
