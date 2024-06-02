@@ -31,13 +31,11 @@ class CompSummaryGenerator:
             data = report_controller.read_from_cell(f"{lunch_format['TOTALS']}{i}")
             title = report_controller.read_from_cell(f"A{i}")
             entries.append(data)
-            print(title, data)
 
         for i in range(lunch_format["SUMMARY_START"], lunch_format["SUMMARY_END"] + 1):
             data = report_controller.read_from_cell(f"{lunch_format['SUMMARY']}{i}")
             title = report_controller.read_from_cell(f"A{i}")
             entries.append(data)
-            print(title, data)
 
         # Create or open restaurnt_name_comp_summary.xlsx
         template_file_path = f"{self.root}/scripts/Report_Templates/Comp_Summary_Template.xlsx"
@@ -50,13 +48,29 @@ class CompSummaryGenerator:
         summary_controller.change_sheet(summary_format["SHEET"])
 
         # Insert column containing data from the summary
-        start = summary_format["START"]
-        summary_controller.insert_col(2)
-
         start_day, _ = generic.get_week_period(generic.diff_days(date, 1))
-        summary_controller.insert_data_into_cell(f"WEEK {start_day.strftime('%b-%d')}", f"{summary_format['WEEK']}")
+        header = f"WEEK {start_day.strftime('%b-%d')}"
+
+        check_start = "B"
+        col = None
+
+        for i in range(0, 10):
+            value = summary_controller.read_from_cell(f"{check_start}5")
+            if value != header:
+                check_start = f"{chr(ord(check_start) + 1)}"
+            else:
+                col = check_start
+                break
+        
+        if not col:
+            summary_controller.insert_col(2)
+            col = summary_format["COL"]
+        start = summary_format["START"]
+
+        summary_controller.insert_data_into_cell(header, f"{col}{summary_format['WEEK']}")
+        print(col)
         for entry in entries:
-            summary_controller.insert_data_into_cell(entry, f"{summary_format['COL']}{start}")
+            summary_controller.insert_data_into_cell(entry, f"{col}{start}")
             start += 1
 
         # Save and close the file.
