@@ -4,6 +4,7 @@ from os.path import exists
 from scripts.generate_reports import *
 from create_folder_structure import create_folder_structure
 from datetime import timedelta
+from sys import argv
 
 class GeneratorController:
     def __init__(self) -> None:
@@ -80,12 +81,12 @@ def test():
                 print(e)
         t_date += timedelta(days=1)
 
-def run_for_today():
+def run_for_date(date: datetime):
     folders = ["BISTRO", "CLIFF", "TIDES", "CAFE"]
 
     controller = GeneratorController()
 
-    today = datetime.now()
+    today = date
 
     for folder in folders:
         controller.set_generator(folder, today.strftime("%m/%d/%Y"))
@@ -96,5 +97,15 @@ def run_for_today():
         except Exception as e:
             print(e)
 
+def run_for_today():
+    today = datetime.now()
+
+    run_for_date(today)
+
 if __name__ == "__main__":
-    run_for_today()
+    if len(argv) > 1:
+        date_str = argv[-1] # dd/mm/yyyy
+        date = datetime.strptime(date_str, "%d/%m/%Y")
+        run_for_date(date)
+    else:
+        run_for_today()
