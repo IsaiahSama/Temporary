@@ -56,5 +56,11 @@ async def generate(
 
 
 if __name__ == "__main__":
+    import os
+    from sys import argv
+    if len(argv) > 1:
+        key = argv[1]
+        if key == "task":
+            os.chdir("C:/'4AM Reports")
     import uvicorn
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
