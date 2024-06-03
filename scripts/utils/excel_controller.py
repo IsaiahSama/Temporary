@@ -86,11 +86,11 @@ class ExcelController:
         Returns:
             None
         """
-        if type(data) == int or type(data) == float:
-            prev_value = self.sheet[cell].value or 0
-            self.sheet[cell] = prev_value + data
-        else:
-            self.sheet[cell] = data
+        # if type(data) == int or type(data) == float:
+        #     prev_value = self.sheet[cell].value or 0
+        #     self.sheet[cell] = prev_value + data
+        # else:
+        self.sheet[cell] = data
 
     def read_from_cell(self, cell:str) -> str:
         """
