@@ -182,7 +182,7 @@ class ReportGenerator:
         controller.insert_data_into_cell(data['VAT'], form['Others']['VAT'])
 
         # Set Sales Tax
-        controller.insert_data_into_cell(data['TAX'], form['Others']['Tax'])
+        controller.insert_data_into_cell(data['TAX'], form['Others']['TAX'])
 
         # Save the workbook to a new file with the previously established filename.
         controller.save(report_filename)

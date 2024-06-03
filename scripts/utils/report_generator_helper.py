@@ -389,11 +389,12 @@ class ReportGeneratorHelper:
             for currency, amount in payment_data.items():
                 if payment_type != "Cash":
                     total += amount * generic.get_exch_rate(currency)
-                if currency != "BBD":
-                    if currency in foreign_currency:
-                        foreign_currency[currency] += amount
-                    else:
-                        foreign_currency[currency] = amount
+                else:
+                    if currency != "BBD":
+                        if currency in foreign_currency:
+                            foreign_currency[currency] += amount
+                        else:
+                            foreign_currency[currency] = amount
 
             if payment_type != "Cash":
                 cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
