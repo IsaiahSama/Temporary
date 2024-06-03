@@ -56,7 +56,9 @@
         "Dinner": "F46"
     },
     "Others": {
-        "Levy": "K39"
+        "Levy": "K39",
+        "VAT": "M15",
+        "TAX": "K29"
     },
     "Foreign_Currency": {
         "USD": "B33",

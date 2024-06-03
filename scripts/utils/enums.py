@@ -94,7 +94,8 @@ class SalesColumnNames(Enum):
     GUESTS = "Guests"
     AMOUNT = "Sale Std Net"
     LEVY = "Levy"
-    VAT = "Vat"
+    VAT = "VAT"
+    TAX = "Sale Tax"
 
 class PaymentColumnNames(Enum):
     """

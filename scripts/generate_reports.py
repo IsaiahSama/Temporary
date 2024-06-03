@@ -106,6 +106,9 @@ class ReportGenerator:
         # Calculate number of Guests by Meal Type
         guests_by_meal_type = self.helper.calculate_guests_by_meal_type(sales_df)
 
+        # Calculate sale tax
+        tax = self.helper.calculate_sales_tax(sales_df)
+
         # Calculate VAT
         vat = self.helper.calculate_vat(sales_df)
 
@@ -118,6 +121,7 @@ class ReportGenerator:
         result_dict['SESSION_TYPE'] = spent_by_session_type
         result_dict['SUB_CATEGORY'] = spent_by_sub_categories
         result_dict['GUESTS'] = guests_by_meal_type
+        result_dict['TAX'] = tax
         result_dict['VAT'] = vat
         result_dict['LEVY'] = levy
 
@@ -173,6 +177,12 @@ class ReportGenerator:
 
         ## Set Government Levy
         controller.insert_data_into_cell(data['LEVY'], form['Others']['Levy'])
+
+        # Set VAT
+        controller.insert_data_into_cell(data['VAT'], form['Others']['VAT'])
+
+        # Set Sales Tax
+        controller.insert_data_into_cell(data['TAX'], form['Others']['Tax'])
 
         # Save the workbook to a new file with the previously established filename.
         controller.save(report_filename)

@@ -276,6 +276,22 @@ class ReportGeneratorHelper:
         if SalesColumnNames.LEVY.value in sales_df:
             return sales_df[SalesColumnNames.LEVY.value].sum()
         return 0
+    
+
+    @staticmethod
+    def calculate_sales_tax(sales_df: DataFrame) -> float:
+        """
+        Calculates the total sales tax amount from the sales DataFrame.
+
+        Parameters:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            float: The total sales tax amount from the sales DataFrame.
+        """
+        if SalesColumnNames.TAX.value in sales_df:
+            return sales_df[SalesColumnNames.TAX.value].sum()   
+        return 0
 
     @staticmethod
     def create_excel_controller(filepath: str) -> ExcelController:
@@ -368,20 +384,20 @@ class ReportGeneratorHelper:
         foreign_currency: dict = {}
 
         for payment_type, payment_data in spent_by_payment_type_dict.items():
-            if payment_type == "Cash": continue
-
             total = 0
 
             for currency, amount in payment_data.items():
-                total += amount * generic.get_exch_rate(currency)
+                if payment_type != "Cash":
+                    total += amount * generic.get_exch_rate(currency)
                 if currency != "BBD":
                     if currency in foreign_currency:
                         foreign_currency[currency] += amount
                     else:
                         foreign_currency[currency] = amount
 
-            cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
-            controller.insert_data_into_cell(total, cell)
+            if payment_type != "Cash":
+                cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
+                controller.insert_data_into_cell(total, cell)
 
         return foreign_currency
     
