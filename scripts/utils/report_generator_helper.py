@@ -55,7 +55,7 @@ class ReportGeneratorHelper:
             """
             split_category = category.split('/')
             if len(split_category) > 2: return split_category[2]
-            else: return "Misc"
+            else: return "SERVICE"
 
         category_key = SalesColumnNames.CATEGORY.value
         sales_df[category_key] = sales_df[category_key].apply(clean_category)
@@ -200,6 +200,7 @@ class ReportGeneratorHelper:
                 containing the subcategories as keys and the total amount spent as values.
         """
         payment_categories = {}
+        service_charge = 0
 
         for _, row in sales_df.iterrows():
             category = row[SalesColumnNames.CATEGORY.value]
@@ -215,7 +216,9 @@ class ReportGeneratorHelper:
                 payment_categories.update({session: {category: amount}})
             
         payment_categories = {k: {category: round(amount, 2) for category, amount in v.items()} for k, v in payment_categories.items()}
-
+        
+        service_charge = sum(payment_categories['SERVICE'].values())
+        payment_categories['SERVICE']['Total Service Charge'] = round(service_charge, 2)
         return payment_categories
     
     @staticmethod
@@ -246,6 +249,16 @@ class ReportGeneratorHelper:
                 guests_by_meal.update({session: guests})
 
         return guests_by_meal
+    
+    @staticmethod
+    def calculate_service_charge(sales_df: DataFrame) -> float:
+
+        total = 0
+        for _, row in sales_df.iterrows():
+            if row[SalesColumnNames.CATEGORY.value] == 'SERVICE':
+                total += row[SalesColumnNames.AMOUNT.value]
+
+        return total
     
     @staticmethod
     def calculate_vat(sales_df: DataFrame) -> float:
@@ -362,6 +375,8 @@ class ReportGeneratorHelper:
         for session, session_data in spent_by_sub_category_dict.items():
             row = matrix_form['Rows'][session]
             for subcategory, cost in session_data.items():
+                if subcategory not in matrix_form['Columns']:
+                    continue
                 col = matrix_form['Columns'][subcategory]
                 cell = ReportGeneratorHelper.parse_cell(subcategory, f"{col}{row}", controller)
                 controller.insert_data_into_cell(cost, cell)

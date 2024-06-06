@@ -11,7 +11,6 @@
             "Wine": "G",
             "Tobacco": "H",
             "Cigars": "H",
-            "Misc": "I",
             "Other": "K",
             "Fees": "K"
         },
@@ -58,7 +57,8 @@
     "Others": {
         "Levy": "K39",
         "VAT": "M15",
-        "TAX": "K29"
+        "TAX": "K29",
+        "SERVICE": "K29"
     },
     "Foreign_Currency": {
         "USD": "B33",
