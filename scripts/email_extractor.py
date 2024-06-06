@@ -105,7 +105,7 @@ class EmailExtractor:
             
         first_date = None
         for payload in filtered:
-            attachments = [part for part in payload['parts'] if part['mimeType'] == 'text/csv']
+            attachments = [part for part in payload['parts'] if part['mimeType'] in ('text/csv', 'application/octet-stream')]
 
             for attachment in attachments:
                 filename = '-'.join([word.strip() for word in attachment['filename'].split("-")])
