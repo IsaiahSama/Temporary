@@ -92,7 +92,7 @@ class SalesColumnNames(Enum):
     SESSION = "Session"
     CATEGORY = "Category"
     GUESTS = "Guests"
-    AMOUNT = "Sale Std Net"
+    AMOUNT = "Sale Net"
     LEVY = "Levy"
     VAT = "VAT"
     TAX = "Sale Tax"
