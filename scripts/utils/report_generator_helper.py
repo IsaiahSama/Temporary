@@ -200,7 +200,6 @@ class ReportGeneratorHelper:
                 containing the subcategories as keys and the total amount spent as values.
         """
         payment_categories = {}
-        service_charge = 0
 
         for _, row in sales_df.iterrows():
             category = row[SalesColumnNames.CATEGORY.value]
@@ -217,8 +216,6 @@ class ReportGeneratorHelper:
             
         payment_categories = {k: {category: round(amount, 2) for category, amount in v.items()} for k, v in payment_categories.items()}
         
-        service_charge = sum(payment_categories['SERVICE'].values())
-        payment_categories['SERVICE']['Total Service Charge'] = round(service_charge, 2)
         return payment_categories
     
     @staticmethod
