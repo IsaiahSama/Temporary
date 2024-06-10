@@ -1,7 +1,10 @@
 """This will be the driver used to create the comp summary report for each restaurant."""
 from datetime import datetime
 from os.path import exists
-from utils import *
+try:
+    from utils import *
+except ModuleNotFoundError:
+    from .utils import *
 
 class CompSummaryGenerator:
     def __init__(self, root: str=".."):

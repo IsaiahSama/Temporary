@@ -10,4 +10,7 @@ generator = CompSummaryGenerator()
 restaurants = ["CAFE", "CLIFF", "TIDES", "BISTRO"]
 
 for restaurant in restaurants:
-    generator.generate_comp_summary(restaurant, last_week)
+    try:
+        generator.generate_comp_summary(restaurant, last_week)
+    except Exception as e:
+        print(e)
