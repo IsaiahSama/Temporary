@@ -5,7 +5,7 @@ from scripts.generate_comp import CompSummaryGenerator
 
 last_week = datetime.now() - timedelta(days = 2)
 
-generator = CompSummaryGenerator()
+generator = CompSummaryGenerator(root=".")
 
 restaurants = ["CAFE", "CLIFF", "TIDES", "BISTRO"]
 

@@ -9,7 +9,6 @@ except ModuleNotFoundError:
 class CompSummaryGenerator:
     def __init__(self, root: str=".."):
         self.root = root
-        pass
 
     def generate_comp_summary(self, restaurant_key: str, date: datetime) -> str:
 
