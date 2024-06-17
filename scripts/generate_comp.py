@@ -40,7 +40,7 @@ class CompSummaryGenerator:
             entries.append(data)
 
         # Create or open restaurnt_name_comp_summary.xlsx
-        template_file_path = f"{self.root}/scripts/Report_Templates/Comp_Summary_Template.xlsx"
+        template_file_path = f"{self.root}/scripts/Report_Templates/{abr}_Comp_Summary_Template.xlsx"
         summary_file_path = f"{self.root}/documents/Summaries/{abr}_Comp_Summary.xlsx"
         
         if exists(summary_file_path):
