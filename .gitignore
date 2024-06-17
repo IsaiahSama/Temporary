@@ -1,4 +1,5 @@
 scripts/.env
 credentials.json
 token.json
-documents/ 
+documents/
+static/*/

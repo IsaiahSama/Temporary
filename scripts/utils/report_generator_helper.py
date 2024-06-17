@@ -149,7 +149,7 @@ class ReportGeneratorHelper:
             else:
                 payment_totals.update({payment_type: {currency: amount}})
         
-        payment_totals = {k: {currency: round(amount, 2) for currency, amount in v.items()} for k, v in payment_totals.items()}
+        payment_totals = {k: {currency: abs(round(amount, 2)) for currency, amount in v.items()} for k, v in payment_totals.items()}
         return payment_totals
     
     @staticmethod
