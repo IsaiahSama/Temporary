@@ -50,8 +50,8 @@ class CompSummaryGenerator:
         summary_controller.change_sheet(summary_format["SHEET"])
 
         # Insert column containing data from the summary
-        start_day, _ = generic.get_week_period(generic.diff_days(date, 1))
-        header = f"WEEK {start_day.strftime('%b-%d')}"
+        _, end_day = generic.get_week_period(generic.diff_days(date, 1))
+        header = f"WE {end_day.strftime('%b-%d')}"
 
         check_start = "B"
         col = None
