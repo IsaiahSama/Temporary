@@ -70,7 +70,6 @@ class CompSummaryGenerator:
         start = summary_format["START"]
 
         summary_controller.insert_data_into_cell(header, f"{col}{summary_format['WEEK']}")
-        print(col)
         for entry in entries:
             summary_controller.insert_data_into_cell(entry, f"{col}{start}")
             start += 1
@@ -79,9 +78,9 @@ class CompSummaryGenerator:
         summary_controller.save(summary_file_path)
 
         # Return filepath
-
+        print("Summary generated and stored in " + summary_file_path)
         return summary_file_path
     
 if __name__ == "__main__":
     generator = CompSummaryGenerator()
-    generator.generate_comp_summary("BISTRO", datetime(2024, 5, 16))
+    generator.generate_comp_summary("BISTRO", datetime(2024, 5, 31))
