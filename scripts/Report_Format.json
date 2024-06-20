@@ -56,6 +56,17 @@
         "Lunch": "F45",
         "Dinner": "F46"
     },
+    "Bar_Only": {
+        "Breakfast_Title": "A48",
+        "Lunch_Title": "A49",
+        "Dinner_Title": "A50",
+        "Breakfast_Count": "B48",
+        "Breakfast_Cost": "C48",
+        "Lunch_Count": "B49",
+        "Lunch_Cost": "C49",
+        "Dinner_Count": "B50",
+        "Dinner_Cost": "C50"
+    },
     "Others": {
         "Levy": "K39",
         "VAT": "M15",

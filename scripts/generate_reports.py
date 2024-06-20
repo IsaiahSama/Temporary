@@ -115,6 +115,9 @@ class ReportGenerator:
         # Calculate Complimentary Covers.
         complimentary_covers = self.helper.calculate_complimentary_covers(sales_df)
 
+        # Calculate Bar Only Covers
+        bar_only_covers = self.helper.calculate_bar_only_covers(sales_df)
+
         # Calculate VAT
         vat = self.helper.calculate_vat(sales_df)
 
@@ -128,6 +131,7 @@ class ReportGenerator:
         result_dict['SUB_CATEGORY'] = spent_by_sub_categories
         result_dict['GUESTS'] = guests_by_meal_type
         result_dict['COMPLIMENTARY_COVERS'] = complimentary_covers
+        result_dict["BAR_ONLY"] = bar_only_covers
         result_dict['SERVICE'] = service_charge
         result_dict['VAT'] = vat
         result_dict['LEVY'] = levy
@@ -183,6 +187,9 @@ class ReportGenerator:
         controller.insert_data_into_cell("Complimentary", form['Guests']['Complimentary_Title'])
         data['GUESTS']['Complimentary'] = data['COMPLIMENTARY_COVERS']
         self.helper.fill_guest_covers(data['GUESTS'], form['Guests'], controller)
+
+        ## Set Bar Only Covers
+        self.helper.fill_bar_only_covers(data['BAR_ONLY'], form['Bar_Only'], controller)
 
         ## Set Government Levy
         controller.insert_data_into_cell(data['LEVY'], form['Others']['Levy'])

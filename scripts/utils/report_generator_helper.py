@@ -340,6 +340,45 @@ class ReportGeneratorHelper:
                 complimentary_covers += 1
         
         return complimentary_covers
+    
+    @staticmethod
+    def calculate_bar_only_covers(sales_df: DataFrame) -> dict:
+        """
+        Calculates the number of bar only covers in the given sales DataFrame.
+
+        Args:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            dict: A dictionary containing the number of bar only covers for each session type.
+        """
+
+        bar_only_covers = {
+            "Breakfast": {
+                "Count": 0,
+                "Sales": 0
+            },
+            "Lunch": {
+                "Count": 0,
+                "Sales": 0
+            },
+            "Dinner": {
+                "Count": 0,
+                "Sales": 0
+            }
+        }
+
+        food_order_ids = sales_df.loc[sales_df[SalesColumnNames.CATEGORY.value] == "Food"][SalesColumnNames.ID.value].unique()
+        bar_only_df_all = sales_df.loc[~sales_df[SalesColumnNames.ID.value].isin(food_order_ids)]
+        bar_only_df = bar_only_df_all.drop_duplicates(SalesColumnNames.ID.value, keep='first')
+
+        for _, row in bar_only_df.iterrows():
+            session = row[SalesColumnNames.SESSION.value]
+            bar_only_covers[session]['Count'] += 1
+            bar_only_covers[session]['Sales'] += row[SalesColumnNames.AMOUNT.value]
+            bar_only_covers[session]['Sales'] = round(bar_only_covers[session]['Sales'], 2)
+
+        return bar_only_covers
 
     @staticmethod
     def create_excel_controller(filepath: str) -> ExcelController:
@@ -490,5 +529,41 @@ class ReportGeneratorHelper:
         for session, count in guests_covers_dict.items():
             cell = guests_covers_form[session]
             controller.insert_data_into_cell(count, cell)
+
+        return None
+    
+    @staticmethod
+    def fill_bar_only_covers(bar_only_covers_dict: dict, bar_only_covers_form: dict, controller: ExcelController) -> None:
+        """
+        Fills the bar only covers in the Excel sheet using the provided bar only covers dictionary, bar only covers form, and Excel controller.
+
+        Parameters:
+            bar_only_covers_dict (dict): A dictionary containing the bar only covers information.
+            bar_only_covers_form (dict): A dictionary defining the structure of the bar only covers form.
+            controller (ExcelController): An instance of the ExcelController class to interact with the Excel sheet.
+
+        Returns:    
+            None
+        """
+
+        keys = ["Breakfast", "Lunch", "Dinner"]
+
+        # Setting Titles
+        for key in keys:
+            full_key = key + "_Title"
+            cell = bar_only_covers_form[full_key]
+            controller.insert_data_into_cell(full_key, cell)
+
+        # Setting Counts
+        for key in keys:
+            full_key = key + "_Count"
+            cell = bar_only_covers_form[full_key]
+            controller.insert_data_into_cell(bar_only_covers_dict[key], cell)
+
+        # Setting costs
+        for key in keys:
+            full_key = key + "_Cost"
+            cell = bar_only_covers_form[full_key]
+            controller.insert_data_into_cell(bar_only_covers_dict[key], cell)
 
         return None
