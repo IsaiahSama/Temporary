@@ -50,6 +50,8 @@
         "Cheque": "S39"
     },
     "Guests": {
+        "Complimentary_Title": "E43",
+        "Complimentary": "F43",
         "Breakfast": "F44",
         "Lunch": "F45",
         "Dinner": "F46"

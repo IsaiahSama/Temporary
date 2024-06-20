@@ -96,6 +96,7 @@ class SalesColumnNames(Enum):
     LEVY = "Levy"
     VAT = "VAT"
     TAX = "Sale Tax"
+    DISCOUNT = "Sale Disc. %"
 
 class PaymentColumnNames(Enum):
     """

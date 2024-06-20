@@ -4,7 +4,10 @@ from pandas import DataFrame
 from datetime import datetime
 from json import dumps
 
-from .utils import *
+try:
+    from .utils import *
+except ImportError:
+    from utils import *
 
 class ReportGenerator:
     def __init__(self, restaurant_name: RestaurantNames, date: datetime=None, root: str=".."):
@@ -109,6 +112,9 @@ class ReportGenerator:
         # Calculate Service Charge
         service_charge = self.helper.calculate_service_charge(sales_df)
 
+        # Calculate Complimentary Covers.
+        complimentary_covers = self.helper.calculate_complimentary_covers(sales_df)
+
         # Calculate VAT
         vat = self.helper.calculate_vat(sales_df)
 
@@ -121,6 +127,7 @@ class ReportGenerator:
         result_dict['SESSION_TYPE'] = spent_by_session_type
         result_dict['SUB_CATEGORY'] = spent_by_sub_categories
         result_dict['GUESTS'] = guests_by_meal_type
+        result_dict['COMPLIMENTARY_COVERS'] = complimentary_covers
         result_dict['SERVICE'] = service_charge
         result_dict['VAT'] = vat
         result_dict['LEVY'] = levy
@@ -172,7 +179,9 @@ class ReportGenerator:
         ## Set Foreign Currencies
         self.helper.fill_foreign_currency(foreign_currency, form['Foreign_Currency'], controller)
 
-        ## Guest Covers
+        ## Guest Covers 
+        controller.insert_data_into_cell("Complimentary", form['Guests']['Complimentary_Title'])
+        data['GUESTS']['Complimentary'] = data['COMPLIMENTARY_COVERS']
         self.helper.fill_guest_covers(data['GUESTS'], form['Guests'], controller)
 
         ## Set Government Levy
@@ -200,6 +209,6 @@ class ReportGenerator:
         pass
 
 if __name__ == "__main__":
-    target_date = datetime(2024, 5, 9)
+    target_date = datetime(2024, 5, 31)
     rg = ReportGenerator(RestaurantNames.BISTRO, target_date)
     rg.generate_daily_report()

@@ -249,6 +249,15 @@ class ReportGeneratorHelper:
     
     @staticmethod
     def calculate_service_charge(sales_df: DataFrame) -> float:
+        """
+        Calculate the total service charge from a DataFrame of sales.
+
+        Args:
+            sales_df (DataFrame): The DataFrame containing sales data.
+
+        Returns:
+            float: The total service charge from the sales DataFrame.
+        """
 
         total = 0
         for _, row in sales_df.iterrows():
@@ -302,6 +311,35 @@ class ReportGeneratorHelper:
         if SalesColumnNames.TAX.value in sales_df:
             return sales_df[SalesColumnNames.TAX.value].sum()   
         return 0
+
+    @staticmethod
+    def calculate_complimentary_covers(sales_df: DataFrame) -> int:
+        """
+        Determines complimentary covers from the sales DataFrame.
+        Complimentary covers are the covers where the Sale Disc % field is 100%, for orders that consists of Food only.
+
+        Args:
+            sales_df (DataFrame): The DataFrame containing sales data.
+        
+        Returns:
+            int: An integer representing the total complimentary covers.
+        """
+
+        copy_df: DataFrame = sales_df.copy()
+        copy_df = copy_df.loc[copy_df[SalesColumnNames.DISCOUNT.value] == 100]
+        order_ids = copy_df[SalesColumnNames.ID.value].unique()
+
+        complimentary_covers = 0
+        for order_id in order_ids:
+            categories = []
+
+            for _, row in copy_df.loc[copy_df[SalesColumnNames.ID.value] == order_id].iterrows():
+                category = row[SalesColumnNames.CATEGORY.value]
+                categories.append(category)
+            if all(category == "Food" for category in categories):
+                complimentary_covers += 1
+        
+        return complimentary_covers
 
     @staticmethod
     def create_excel_controller(filepath: str) -> ExcelController:
