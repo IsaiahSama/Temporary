@@ -244,7 +244,7 @@ class ReportGeneratorHelper:
                 guests_by_meal[session] += 1 if is_cdp else guests
             else:
                 guests_by_meal.update({session: 1 if is_cdp else guests})
-                
+
         return guests_by_meal
     
     @staticmethod
@@ -552,7 +552,7 @@ class ReportGeneratorHelper:
         for session in sessions:
             key = session + "_Title"
             cell = bar_only_covers_form[key]
-            controller.insert_data_into_cell(key, cell)
+            controller.insert_data_into_cell(f"{session} (Bar Only)", cell)
 
         # Setting Counts
         for session in sessions:
