@@ -546,24 +546,24 @@ class ReportGeneratorHelper:
             None
         """
 
-        keys = ["Breakfast", "Lunch", "Dinner"]
+        sessions = ["Breakfast", "Lunch", "Dinner"]
 
         # Setting Titles
-        for key in keys:
-            full_key = key + "_Title"
-            cell = bar_only_covers_form[full_key]
-            controller.insert_data_into_cell(full_key, cell)
+        for session in sessions:
+            key = session + "_Title"
+            cell = bar_only_covers_form[key]
+            controller.insert_data_into_cell(key, cell)
 
         # Setting Counts
-        for key in keys:
-            full_key = key + "_Count"
-            cell = bar_only_covers_form[full_key]
-            controller.insert_data_into_cell(bar_only_covers_dict[key], cell)
+        for session in sessions:
+            key = session + "_Count"
+            cell = bar_only_covers_form[key]
+            controller.insert_data_into_cell(bar_only_covers_dict[session]["Count"], cell)
 
         # Setting costs
-        for key in keys:
-            full_key = key + "_Cost"
-            cell = bar_only_covers_form[full_key]
-            controller.insert_data_into_cell(bar_only_covers_dict[key], cell)
+        for session in sessions:
+            key = session + "_Cost"
+            cell = bar_only_covers_form[key]
+            controller.insert_data_into_cell(bar_only_covers_dict[session]["Sales"], cell)
 
         return None
