@@ -60,6 +60,7 @@ class GeneratorController:
         with open(f"./documents/Upload/{self.generator.restaurant_name.replace(' ', '_')}/{self.generator.restaurant_abrv}-{filemode}-{self.generator.date.strftime('%Y%m%d')}.csv", "wb") as f:
             f.write(file.read())
 
+FOLDERS = ["QP_Bistro", "The_Cliff", "Tides", "Cafe_De_Paris"]
 folders = ["BISTRO", "CLIFF", "TIDES", "CAFE"]
 
 def test():
