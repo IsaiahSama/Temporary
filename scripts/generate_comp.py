@@ -35,7 +35,10 @@ class CompSummaryGenerator:
             entries.append(data)
 
         for i in range(lunch_format["SUMMARY_START"], lunch_format["SUMMARY_END"] + 1):
-            data = round(report_controller.read_from_cell(f"{lunch_format['SUMMARY']}{i}"), 2)
+            try:
+                data = round(report_controller.read_from_cell(f"{lunch_format['SUMMARY']}{i}"), 2)
+            except:
+                data = report_controller.read_from_cell(f"{lunch_format['SUMMARY']}{i}")
             title = report_controller.read_from_cell(f"A{i}")
             entries.append(data)
 
