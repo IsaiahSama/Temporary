@@ -219,7 +219,7 @@ class ReportGeneratorHelper:
         return payment_categories
     
     @staticmethod
-    def calculate_guests_by_meal_type(sales_df: DataFrame) -> dict:
+    def calculate_guests_by_meal_type(sales_df: DataFrame, is_cdp:bool=False) -> dict:
         """
         Calculate the number of guests by meal type.
 
@@ -241,10 +241,10 @@ class ReportGeneratorHelper:
                 continue
             
             if session in guests_by_meal:
-                guests_by_meal[session] += guests
+                guests_by_meal[session] += 1 if is_cdp else guests
             else:
-                guests_by_meal.update({session: guests})
-
+                guests_by_meal.update({session: 1 if is_cdp else guests})
+                
         return guests_by_meal
     
     @staticmethod

@@ -107,7 +107,7 @@ class ReportGenerator:
         spent_by_sub_categories = self.helper.calculate_total_by_subcategory(sales_df)
 
         # Calculate number of Guests by Meal Type
-        guests_by_meal_type = self.helper.calculate_guests_by_meal_type(sales_df)
+        guests_by_meal_type = self.helper.calculate_guests_by_meal_type(sales_df, self.restaurant_abrv == "CDP")
 
         # Calculate Service Charge
         service_charge = self.helper.calculate_service_charge(sales_df)
