@@ -60,9 +60,10 @@ class GeneratorController:
         with open(f"./documents/Upload/{self.generator.restaurant_name.replace(' ', '_')}/{self.generator.restaurant_abrv}-{filemode}-{self.generator.date.strftime('%Y%m%d')}.csv", "wb") as f:
             f.write(file.read())
 
+folders = ["BISTRO", "CLIFF", "TIDES", "CAFE"]
+
 def test():
     """Used for testing"""
-    folders = ["BISTRO", "CLIFF", "TIDES", "CAFE"]
 
     start_date = datetime(2024, 5, 13)
     t_date = start_date
@@ -82,8 +83,6 @@ def test():
         t_date += timedelta(days=1)
 
 def run_for_date(date: datetime):
-    folders = ["BISTRO", "CLIFF", "TIDES", "CAFE"]
-
     controller = GeneratorController()
 
     today = date
