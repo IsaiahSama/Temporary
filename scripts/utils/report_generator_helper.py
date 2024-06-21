@@ -546,6 +546,12 @@ class ReportGeneratorHelper:
             None
         """
 
+        headers = ["Session", "Count", "Cost"]
+        header_cells = ["A47", "B47", "C47"]
+
+        for i, header in enumerate(headers):
+            controller.insert_data_into_cell(header, header_cells[i])
+
         sessions = ["Breakfast", "Lunch", "Dinner"]
 
         # Setting Titles
