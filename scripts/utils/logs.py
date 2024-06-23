@@ -5,29 +5,38 @@ from datetime import datetime
 from .custom_exceptions import *
 import os
 
+base_dir = os.path.dirname(__file__)
+logs_dir = os.path.join(base_dir, "..", "..", "documents", "Logs")
 
-LOG_FILE = os.path.join(os.path.dirname(__file__), "..", "..", "documents", "Logs", "logs.txt")
+os.makedirs(logs_dir, exist_ok=True)
+
+LOG_FILE = os.path.join(logs_dir, "logs.txt")
 
 logging.basicConfig(filename=LOG_FILE,
                     filemode='a',
-                    format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
+                    format='%(asctime)s, %(name)s %(levelname)s %(message)s',
                     datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
-logger = logging.getLogger("4am")
+logger = logging.getLogger("root")
 
 class Logger:
+    """
+    This class will be responsible for handling the logging of the script."""
     
     @staticmethod
     def log(message: str):
+        print(message)
         logger.info(message)
 
     @staticmethod
     def error(message: str):
+        print(message)
         logger.error(message)
 
     @staticmethod
     def warning(message: str):
+        print(message)
         logger.warning(message)
 
     @staticmethod

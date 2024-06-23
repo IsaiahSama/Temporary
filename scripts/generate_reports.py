@@ -30,7 +30,7 @@ class ReportGenerator:
 
     def generate_daily_report(self) -> str:
         # Step 0: Prepare the date, and load in the correct format.
-
+        Logger.log(f"Generating report for {self.date} for {self.restaurant_name}")
         target_date_string = self.date.strftime("%Y%m%d")
 
         # Step 1: Load the csv with either the provided date, or the current one into dataframes.
@@ -49,13 +49,12 @@ class ReportGenerator:
 
         # Step 3: Save the results into the correct spreadsheeet
         output_path = self.render_daily_template(calculated_results)
+        Logger.log(f"Report generated and stored in {output_path}")
         print("Report generated and stored in " + output_path)
 
         # Step 4: Store data in database
 
-        # Step 5: Create the Rolling 8 Week Report
-
-        # Step 6: Export data to QuickBooks Format.
+        # Step 5: Export data to QuickBooks Format.
         return output_path
 
     def get_df_from_csv(self, filepath: str, date_fields: list=[]) -> DataFrame:
@@ -95,6 +94,7 @@ class ReportGenerator:
                 total spent by meal type, total spent by meal type sub-categories, number of guests by meal type,
                 VAT, and Government Levy.
         """
+        Logger.log(f"Calculating metrics for report for {self.date} on {self.restaurant_name} ...")
         result_dict = {}
 
         # Calculate total USD and BBD spent by Payment Type

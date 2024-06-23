@@ -12,7 +12,9 @@ from datetime import datetime
 
 try:
     from .utils.enums import RestaurantNames
+    from .utils import Logger
 except ImportError:
+    from utils import Logger
     from utils.enums import RestaurantNames
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
@@ -50,6 +52,7 @@ class EmailExtractor:
         # time.
 
         if not os.path.exists(f"{self.root}/credentials.json"):
+            Logger.error("credentials.json not found")
             raise Exception("credentials.json not found")
 
         creds: Credentials = None
@@ -86,6 +89,7 @@ class EmailExtractor:
         Returns:
             datetime: The date of the first email retrieved.
         """
+        Logger.log(f"Attempting to retrieve last {n} emails")
 
         service = build("gmail", "v1", credentials=self.creds)
         results = service.users().messages().list(userId="me", maxResults=n).execute()
@@ -104,6 +108,7 @@ class EmailExtractor:
                 filtered.append(payload)
             
         first_date = None
+        Logger.log(f"Found {len(filtered)} emails with CSV attachments with QB Checks in the subject. ")
         for payload in filtered:
             attachments = [part for part in payload['parts'] if part['mimeType'] in ('text/csv', 'application/octet-stream')]
 
@@ -130,6 +135,7 @@ class EmailExtractor:
                 stored_filename = f"{self.root}/documents/Upload/{RestaurantNames.get_restaurant_by_abrv(file_info['KEY']).value[0].replace(' ', '_')}/{file_info['filename']}"
                 with open(stored_filename, "wb") as f:
                     f.write(base64.urlsafe_b64decode(file['data'].encode('utf-8')))
+                    Logger.log(f"Downloaded {stored_filename}")
                     print("Downloaded " + stored_filename)
             
         return first_date

@@ -1,6 +1,7 @@
 import daily_gen
 from os import listdir, path
 from datetime import datetime
+from scripts.utils import Logger
 
 uploads = "./documents/Upload/"
 
@@ -22,7 +23,6 @@ for i, folder in enumerate(FOLDERS):
         controller.set_generator(daily_gen.folders[i], parsed_date_str)
         try:
             controller.generate_report()
-        except daily_gen.CustomExceptions.BadlyFormattedCSVException as e:
-            print(e)
         except Exception as e:
+            Logger.error(e)
             print(e)

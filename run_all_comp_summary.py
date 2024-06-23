@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from scripts.generate_comp import CompSummaryGenerator
+from scripts.generate_comp import CompSummaryGenerator, Logger
 from os import listdir
 
 report_base = "./documents/Generated_Reports/"
@@ -32,4 +32,5 @@ for key, datetimes in results.items():
             date += timedelta(days=1)
             generator.generate_comp_summary(key, date)
         except Exception as e:
+            Logger.error(e)
             print(e)

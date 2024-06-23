@@ -55,6 +55,7 @@ class GeneratorController:
             None
         """
         if filemode not in ["Sales", "Payments"]:
+            Logger.error(f"File mode must be either 'Sales' or 'Payments'.")
             raise ValueError("File mode must be either 'Sales' or 'Payments'.")
         
         with open(f"./documents/Upload/{self.generator.restaurant_name.replace(' ', '_')}/{self.generator.restaurant_abrv}-{filemode}-{self.generator.date.strftime('%Y%m%d')}.csv", "wb") as f:
@@ -92,9 +93,8 @@ def run_for_date(date: datetime):
         controller.set_generator(folder, today.strftime("%m/%d/%Y"))
         try:
             controller.generate_report()
-        except CustomExceptions.BadlyFormattedCSVException as e:
-            print(e)
         except Exception as e:
+            Logger.error(e)
             print(e)
 
 def run_for_today():

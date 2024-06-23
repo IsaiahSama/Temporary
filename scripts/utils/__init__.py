@@ -4,5 +4,6 @@ from . import generic
 from . import custom_exceptions as CustomExceptions
 from .enums import RestaurantNames, PaymentColumnNames, SalesColumnNames
 from .report_generator_helper import ReportGeneratorHelper, ExcelController
+from .logs import Logger
 
-__all__ = ["RestaurantNames", "PaymentColumnNames", "SalesColumnNames", "ReportGeneratorHelper", "generic", "ExcelController", "CustomExceptions"]
+__all__ = ["RestaurantNames", "PaymentColumnNames", "SalesColumnNames", "ReportGeneratorHelper", "generic", "ExcelController", "CustomExceptions", "Logger"]

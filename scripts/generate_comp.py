@@ -11,7 +11,7 @@ class CompSummaryGenerator:
         self.root = root
 
     def generate_comp_summary(self, restaurant_key: str, date: datetime) -> str:
-
+        Logger.log(f"Generating comp summary for {restaurant_key} for week including {date.strftime('%m/%d/%Y')} ")
         # Get the restaurnt name
         name_obj: RestaurantNames = RestaurantNames.get_restaurant_by_key(restaurant_key)
         name = '_'.join(name_obj.value[0].split(" "))
@@ -48,8 +48,10 @@ class CompSummaryGenerator:
         
         if exists(summary_file_path):
             summary_controller = ExcelController(summary_file_path)
+            Logger.log("Inserting into existing summary at {summary_file_path}")
         else:
             summary_controller = ExcelController(template_file_path)
+            Logger.log(f"Creating new summary at {summary_file_path}")
         summary_controller.change_sheet(summary_format["SHEET"])
 
         # Insert column containing data from the summary
@@ -81,6 +83,7 @@ class CompSummaryGenerator:
         summary_controller.save(summary_file_path)
 
         # Return filepath
+        Logger.log(f"Summary generated and stored in {summary_file_path}")
         print("Summary generated and stored in " + summary_file_path)
         return summary_file_path
     
