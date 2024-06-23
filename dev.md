@@ -22,6 +22,7 @@ For now, the tentative folder structure is as follows:
 Root
 ├── controller.py
 ├── documents
+|   ├── Logs
 │   ├── Summaries
 │   │   ├── CDP_Comp_Summary.xlsx
 │   ├── Generated_Reports

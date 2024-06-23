@@ -17,6 +17,7 @@ folders = [
     "documents/Upload/QP_Bistro",
     "documents/Upload/Tides",
     "documents/Upload/The_Cliff",
+    "documents/Logs/",
     "scripts",
     "scripts/Report_Templates",
 ]
