@@ -105,6 +105,7 @@
                 document.getElementById('notice').innerHTML += `<br><a href="${file.path}">Download Report</a>`
                 button.disabled = false;
                 button.innerHTML = "Generate Report";
+                htmx.ajax("GET", "/getFiles", {target: "#recent-files-list", swap: "innerHTML"})
             }
 
             handle()
