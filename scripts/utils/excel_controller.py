@@ -1,6 +1,9 @@
 """This module is responsible for the manipulation of workbooks."""
 import openpyxl
+import openpyxl.styles
+import openpyxl.styles.builtins
 import xlwings
+from copy import copy
 
 class ExcelController:
     """This class is responsible for the manipulation of workbooks."""
@@ -115,3 +118,10 @@ class ExcelController:
             None
         """
         self.workbook.save(filename)
+
+    def copy_cell_style_to(self, source_cell, dest_cell:str) -> None:
+        self.sheet[dest_cell].fill = copy(self.sheet[source_cell].fill)
+        self.sheet[dest_cell].font = copy(self.sheet[source_cell].font)
+
+    def make_cell_accounting(self, cell:str):
+        self.sheet[cell].style = "Currency"

@@ -61,6 +61,7 @@ class CompSummaryGenerator:
         check_start = "B"
         col = None
 
+        # Checks if the data was entered before. If so, will use that column and overwrite it.
         for i in range(0, 10):
             value = summary_controller.read_from_cell(f"{check_start}5")
             if value != header:
@@ -77,6 +78,9 @@ class CompSummaryGenerator:
         summary_controller.insert_data_into_cell(header, f"{col}{summary_format['WEEK']}")
         for entry in entries:
             summary_controller.insert_data_into_cell(entry, f"{col}{start}")
+            if start > 13:
+                summary_controller.make_cell_accounting(f"{col}{start}")
+            summary_controller.copy_cell_style_to(f"A{start}", f"{col}{start}")
             start += 1
 
         # Save and close the file.
