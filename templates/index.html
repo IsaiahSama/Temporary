@@ -6,42 +6,52 @@
     <h2 class="subtitle">Fill out the form below to generate the report.</h2>
     <div id="error" class="has-text-danger"></div>
     <div id="notice" class="has-text-success"></div>
-    <form id="mainForm">
-        <div id="meta" class="is-flex is-justify-content-space-around my-5 is-align-items-center">
-            <div class="select">
-                <select id="location">
-                    <option value="---">Choose Location</option>
-                    <option value="TIDES">Tides</option>
-                    <option value="BISTRO">QP Bistro</option>
-                    <option value="CLIFF">The Cliff</option>
-                    <option value="CAFE">Cafe de Paris</option>
-                </select>
-            </div>
-        </div>
+    <div class="is-flex">
 
-        <div id="files" class="is-flex is-justify-content-space-around">
-            <div class="file is-boxed">
+        <form id="mainForm" class="is-flex-grow-2">
+            <div id="meta" class="is-flex is-justify-content-space-around my-5 is-align-items-center">
+                <div class="select">
+                    <select id="location">
+                        <option value="---">Choose Location</option>
+                        <option value="TIDES">Tides</option>
+                        <option value="BISTRO">QP Bistro</option>
+                        <option value="CLIFF">The Cliff</option>
+                        <option value="CAFE">Cafe de Paris</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div id="files" class="is-flex is-justify-content-space-around">
+                <div class="file is-boxed">
+                    <label class="file-label">
+                        <input class="" type="file" id="sales" accept=".csv" required />
+                        <span class="file-cta">
+                            <span class="file-label"> Upload Sales File  </span>
+                        </span>
+                    </label>
+                </div>
+                <div class="file is-boxed">
                 <label class="file-label">
-                    <input class="" type="file" id="sales" accept=".csv" required />
+                    <input class="" type="file" id="payments" accept=".csv" required />
                     <span class="file-cta">
-                        <span class="file-label"> Upload Sales File  </span>
+                        <span class="file-label"> Upload Payments File </span>
                     </span>
                 </label>
+                </div>
             </div>
-            <div class="file is-boxed">
-            <label class="file-label">
-                <input class="" type="file" id="payments" accept=".csv" required />
-                <span class="file-cta">
-                    <span class="file-label"> Upload Payments File </span>
-                </span>
-            </label>
+    
+            <div class="control">
+                <button class="button is-primary is-fullwidth" id="submit">Generate Report</button>
             </div>
+        </form>
+        <div id="recent-files" class="flex-1 content" style="min-width: 10%;" >
+            <ul id="recent-files-list" hx-get="/getFiles" hx-trigger="load" hx-swap="innerHTML">
+                <li>File 1</li>
+                <li>File 2</li>
+                <li>File 3</li>
+            </ul>
         </div>
-
-        <div class="control">
-            <button class="button is-primary is-fullwidth" id="submit">Generate Report</button>
-        </div>
-    </form>
+    </div>
 
     <script>
         const setError = (msg) => {

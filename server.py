@@ -1,12 +1,12 @@
 from datetime import datetime
 from fastapi import FastAPI, File, Form, Request, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 from daily_gen import GeneratorController
-from os.path import exists
-from os import mkdir
+from os.path import exists, isdir
+from os import mkdir, listdir
 
 app = FastAPI()
 
@@ -17,6 +17,19 @@ app.mount("/static", StaticFiles(directory="./static"), name="static")
 @app.get("/")
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/getFiles")
+async def getFiles():
+    folders = [file for file in listdir("./static") if isdir(f"./static/{file}")]
+
+    folder_html = ""
+
+    for folder in folders:
+        for file in listdir(f"./static/{folder}"):
+            folder_html += f"<li><a href='./static/{folder}/{file}'>{file}</a></li>"
+
+    return HTMLResponse(folder_html)
+
 
 @app.post("/generate")
 async def generate(
