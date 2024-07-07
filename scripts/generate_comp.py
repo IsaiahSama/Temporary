@@ -76,12 +76,23 @@ class CompSummaryGenerator:
         start = summary_format["START"]
 
         summary_controller.insert_data_into_cell(header, f"{col}{summary_format['WEEK']}")
-        for entry in entries:
-            summary_controller.insert_data_into_cell(entry, f"{col}{start}")
+
+        # Calculating bar only covers (Alcohol, Non-Alcohol, Water)
+        
+        bars = (17, 18, 19)
+        for i, entry in enumerate(entries):
+            field = summary_controller.read_from_cell(f"A{start}")
             if start > 14:
                 summary_controller.make_cell_accounting(f"{col}{start}")
             summary_controller.copy_cell_style_to(f"A{start}", f"{col}{start}")
-            start += 1
+
+            if i in bars:
+                summary_controller.insert_data_into_cell((summary_controller.read_from_cell(f"{col}{start}") if i != bars[0] else 0) + entry, f"{col}{start}")
+                if i == bars[-1]:
+                    start += 1
+            else:
+                summary_controller.insert_data_into_cell(entry, f"{col}{start}")
+                start += 1
 
         # Save and close the file.
         summary_controller.save(summary_file_path)
