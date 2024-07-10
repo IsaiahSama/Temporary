@@ -16,7 +16,7 @@ logging.basicConfig(filename=LOG_FILE,
                     filemode='a',
                     format='%(asctime)s, %(name)s %(levelname)s %(message)s',
                     datefmt='%H:%M:%S',
-                    level=logging.DEBUG)
+                    level=logging.INFO)
 
 logger = logging.getLogger("root")
 

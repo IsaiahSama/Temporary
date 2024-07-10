@@ -25,6 +25,10 @@
             "TITLE": "E21",
             "FIELD": "H21"
         }, 
+        "Charge Account.": {
+            "TITLE": "E21",
+            "FIELD": "H21"
+        },
         "Pending Payments": {
             "TITLE": "E22",
             "FIELD": "H22"
