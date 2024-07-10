@@ -8,7 +8,9 @@ uploads = "./documents/Upload/"
 
 FOLDERS = ["QP_Bistro", "The_Cliff", "Tides", "Cafe_De_Paris"]
 
-def run_thread(folder):
+run_threaded = True
+
+def run_thread(i, folder):
     files = [file for file in listdir(uploads + folder) if "Payments" in file]
     for file in files:
         key = file.split("-")[0]
@@ -28,12 +30,17 @@ def run_thread(folder):
             Logger.error(e)
             print(e)
 
-threads = []
-for i, folder in enumerate(FOLDERS):
-    tf = Thread(target=run_thread, args=(folder,))
-    tf.start()
-    threads.append(tf)
+if __name__ == "__main__":
+    if run_threaded:
+        threads = []
+        for i, folder in enumerate(FOLDERS):
+            tf = Thread(target=run_thread, args=(i, folder,))
+            tf.start()
+            threads.append(tf)
 
-for thread in threads:
-    thread.join()
+        for thread in threads:
+            thread.join()
+    else:
+        for i, folder in enumerate(FOLDERS):
+            run_thread(i, folder)
 
