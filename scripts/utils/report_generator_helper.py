@@ -99,7 +99,22 @@ class ReportGeneratorHelper:
             hour = dt.hour
             return generic.get_session_classification(hour)
         
+        def discover_to_master(payment_type: str) -> str:
+            """
+            Discovers the payment type to be used in the Master File.
+
+            Parameters:
+                payment_type (str): The payment type to be used in the Master File.
+
+            Returns:
+                str: The payment type to be used in the Master File.
+            """
+
+            if payment_type == "Discover": return "Master"
+        
         payments_df[PaymentColumnNames.SESSION.value] = payments_df[PaymentColumnNames.DATE.value].apply(get_session)
+
+        payments_df[PaymentColumnNames.PAYMENT_TYPE.value] = payments_df[PaymentColumnNames.PAYMENT_TYPE.value].apply(discover_to_master)
 
         return payments_df
 

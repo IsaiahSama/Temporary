@@ -44,7 +44,7 @@
             "FIELD": "H38"
         },
         "VISA": "K21",
-        "Discover": "K21",
+        "Discover": "K22",
         "Master": "K22",
         "AMEX": "K24",
         "Cash Tips": "K27",
