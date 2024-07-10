@@ -254,7 +254,7 @@ class ReportGeneratorHelper:
             guests = row[SalesColumnNames.GUESTS.value]
 
             if isna(guests):
-                continue
+                guests = 0
             
             if session in guests_by_meal:
                 guests_by_meal[session] += 1 if is_cdp else guests
