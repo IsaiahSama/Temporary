@@ -111,6 +111,7 @@ class ReportGeneratorHelper:
             """
 
             if payment_type == "Discover": return "Master"
+            return payment_type
         
         payments_df[PaymentColumnNames.SESSION.value] = payments_df[PaymentColumnNames.DATE.value].apply(get_session)
 
