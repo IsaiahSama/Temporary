@@ -486,8 +486,11 @@ class ReportGeneratorHelper:
                             foreign_currency[currency] = amount
 
             if payment_type != "Cash":
-                cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
-                controller.insert_data_into_cell(total, cell)
+                try:
+                    cell = ReportGeneratorHelper.parse_cell(payment_type, card_form[payment_type], controller)
+                    controller.insert_data_into_cell(total, cell)
+                except KeyError:
+                    raise custom_exceptions.UnknownCardTypeException(f"Unknown card type: {payment_type}")
 
         return foreign_currency
     
