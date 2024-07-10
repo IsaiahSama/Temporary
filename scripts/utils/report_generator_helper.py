@@ -390,8 +390,16 @@ class ReportGeneratorHelper:
 
         for _, row in bar_only_df.iterrows():
             session = row[SalesColumnNames.SESSION.value]
-            bar_only_covers[session]['Count'] += 1
-            bar_only_covers[session]['Sales'] += row[SalesColumnNames.AMOUNT.value]
+            target_rows = bar_only_df_all.loc[bar_only_df_all[SalesColumnNames.ID.value] == row[SalesColumnNames.ID.value]]
+            local_money = 0
+
+            for _, target_row in target_rows.iterrows():
+                if target_row[SalesColumnNames.CATEGORY.value] == "SERVICE":
+                    continue
+                local_money += target_row[SalesColumnNames.AMOUNT.value]
+
+            bar_only_covers[session]['Count'] += row[SalesColumnNames.GUESTS.value]
+            bar_only_covers[session]['Sales'] += local_money
             bar_only_covers[session]['Sales'] = round(bar_only_covers[session]['Sales'], 2)
 
         return bar_only_covers
