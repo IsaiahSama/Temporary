@@ -2,12 +2,13 @@ import daily_gen
 from os import listdir, path
 from datetime import datetime
 from scripts.utils import Logger
+from threading import Thread
 
 uploads = "./documents/Upload/"
 
 FOLDERS = ["QP_Bistro", "The_Cliff", "Tides", "Cafe_De_Paris"]
 
-for i, folder in enumerate(FOLDERS):
+def run_thread(folder):
     files = [file for file in listdir(uploads + folder) if "Payments" in file]
     for file in files:
         key = file.split("-")[0]
@@ -26,3 +27,13 @@ for i, folder in enumerate(FOLDERS):
         except Exception as e:
             Logger.error(e)
             print(e)
+
+threads = []
+for i, folder in enumerate(FOLDERS):
+    tf = Thread(target=run_thread, args=(folder,))
+    tf.start()
+    threads.append(tf)
+
+for thread in threads:
+    thread.join()
+
